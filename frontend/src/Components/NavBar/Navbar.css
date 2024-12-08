@@ -1,0 +1,48 @@
+.navbar{
+    display:flex;
+    justify-content: space-between;
+    margin-left:60px;
+    margin-top: 30px;  
+}
+
+.navbar .logo{
+    width: 130px;
+}
+
+.search{
+    margin-left: 5%;
+    
+    input{
+        border-radius: 34px;
+        width: clamp(350px, 50vw, 550px);
+        height: 45px;
+        border:none; 
+        background-image: url('./Group 2.png');  
+        background-repeat: no-repeat;
+        background-position: right 10px center; /* Adjust to position the image */
+        padding-left: 10px; /* Space for the image */
+        padding-right: 18px; /* Space for the image */
+        font-size: 18px; 
+       
+    }   
+}
+
+.navbar .icons{
+    justify-content: space-between;
+    padding-right:25px;
+
+   
+}
+
+.navbar .icons img{
+    padding-right:25px;
+    cursor: pointer; 
+    width: 40px;
+    height: 41px;
+   }
+
+.user{
+    
+        width: 50px;
+        height: 51px;
+}

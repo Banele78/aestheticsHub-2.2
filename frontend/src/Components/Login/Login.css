@@ -1,0 +1,230 @@
+.nav{
+  text-align: center;
+}
+
+.logo{
+  width: 120px;
+  margin-top: 10px;
+}
+.bd{
+  margin-top: 50px;
+  text-align:center;
+}
+
+  h1{
+    font-size:  clamp(35px, 5vw, 40px);
+    font-weight: bold;
+    color:white;
+}
+
+
+  p{
+    font-size: 20px;    
+    color:white; 
+  }
+
+  .Register{
+    color:blue;
+    cursor: pointer;
+  }  
+
+  
+  .field{
+    padding-top: 30px;
+    color:white;
+  } 
+  .field  input {
+      width: clamp(450px, 50vw, 950px);
+      height: clamp(55px, 10vw, 60px);
+      border-radius: 16px;
+      border: 1px solid #3CA0F2;
+      background-color: #2C2626;
+     color:white;
+     font-size: 17px;
+     padding-left: 10px;
+    }
+
+    .field  select {
+      width: clamp(450px, 50vw, 950px);
+      height: clamp(55px, 10vw, 60px);
+      border-radius: 16px;
+      border: 1px solid #3CA0F2;
+      background-color: #2C2626;
+     color:white;
+     font-size: 17px;
+     padding-left: 10px;
+    }
+    button{
+      width: 140px;
+      height: 45px;
+      border-radius: 30px;
+      background-color: #3CA0F2;
+      border-style: none;
+      font-size: 25px;
+      color: white;   
+      cursor: pointer;      
+    }
+
+    input::placeholder {
+      color: white; /* Change placeholder color here */
+      opacity: 1; /* Ensures the color isn't faded */
+    
+    }
+
+    /* Remove border on focus */
+    input:focus {
+      outline: 3px solid ; /* Removes default focus outline */
+      border: none;  /* Removes border when input is focused */
+    }
+
+  .bd.sign{
+    width:clamp(480px, 52vw, 950px);
+     text-align: left;
+     margin: 0 auto;
+   }
+   .bd.sign h1{
+         font-size:  clamp(30px, 5vw, 35px);      
+     }
+ 
+     .bd.sign  p{
+         font-size: clamp(17px, 3vw, 18px);       
+     }
+    
+ .name{
+   display: flex;
+   gap:20px; 
+   }
+ 
+   .bd.sign .name input{
+     width: clamp(200px, 22.5vw, 350px);
+     height: clamp(55px, 10vw, 60px);          
+     }
+ 
+ .button-container {
+   display: flex;
+   justify-content: center; /* Center the button horizontally */
+   width: 100%; /* Make the container span the full width of .bd.sign */
+ }
+
+.error{
+  font-size: 18px;
+  margin-left: 15px;
+  margin-top: 40px;
+ 
+}
+
+/* Container for the checkbox */
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer; 
+  font-size: 18px;
+  user-select: none;
+  color: white;
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+
+
+/* Hide default checkbox */
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Custom checkbox design */
+.custom-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 19px;
+  width: 19px;
+  background-color: #2C2626;
+  border-radius: 4px;
+  border: 1px solid #3CA0F2;
+  cursor: pointer;
+ 
+}
+
+/* When checkbox is checked, show blue background */
+.checkbox-container input:checked + .custom-checkbox {
+  background-color: #3CA0F2;
+}
+
+
+
+/* Create the checkmark/indicator */
+.custom-checkbox:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked + .custom-checkbox:after {
+  display: block;
+}
+
+/* Style the checkmark */
+.checkbox-container .custom-checkbox:after {
+  left: 6px;
+  top: 1px;
+  width: 4px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+
+
+  @media (max-width: 480px) { 
+    
+     .logo{
+       width: 100px;
+       margin-top: 25px;
+     }
+
+     .bd{
+      overflow: hidden;
+     }
+     .bd.sign{
+       width: 100%;
+        text-align: left;
+   
+     }
+   
+     .bd.sign   h1{
+       font-size: 28px;
+       
+   }
+   
+   .bd.sign  p{
+       font-size: 14px;    
+       color:white;
+   }
+   
+   
+     .bd .field input {
+       width: clamp(350px, 50vw, 950px);
+      
+     }
+   
+     .bd.sign .name input{
+       width: clamp(150px, 22.5vw, 350px);
+       height: clamp(60px, 10vw, 67px);          
+       }
+
+       .error{
+        font-size: 12px;
+      }
+
+       .checkbox-container {
+        font-size: 16px;   
+      }
+   
+   }
+   

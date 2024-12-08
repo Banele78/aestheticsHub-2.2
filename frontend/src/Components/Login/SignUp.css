@@ -1,0 +1,23 @@
+
+
+
+
+.password-field {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-field {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .password-field span {
+    margin-left: 10px;
+    font-size: 1.2em;
+  }
+  
+
+ 
