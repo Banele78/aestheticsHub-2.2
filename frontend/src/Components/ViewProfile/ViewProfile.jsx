@@ -1,22 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./viewProfile.css"
 import { Link } from 'react-router-dom'
 import axios from 'axios';
+import { UserProfileContext } from '../../helper/UserProfileContext';
 
 function ViewProfile({open, setOpen}) {
-
-  const [content, setContent] = useState([]);
-
-  useEffect(() => {
-    axios.get("http://localhost:8080/api/getUserProfile")
-      .then((response) => {
-        setContent(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching posts:", error);
-      });
-  }, []);
+ 
+  const { userProfile, loading, error } = useContext(UserProfileContext);
 
   return (
     <div className="viewP">
@@ -29,11 +19,11 @@ function ViewProfile({open, setOpen}) {
       <div  className="account">
         <h1>Your account</h1>
         <div className="profilePic">
-        <Link to="/editProfile"> <img src={`http://localhost:8080/api/userProfile/${content.id}/ProfileImage`} alt="profile"/> </Link>
+        <Link to="/editProfile"> <img src={`http://localhost:8080/api/userProfile/${userProfile.id}/ProfileImage`} alt="profile"/> </Link>
         </div>
       
-        <h1>{content.nickName} </h1>
-        <h2>{content.artistType} </h2>
+        <h1>{userProfile.nickName} </h1>
+        <h2>{userProfile.artistType} </h2>
         <div className="Stars">
         <img src="./Star.png" alt="profile"/>
         <img src="./Star.png" alt="profile"/>

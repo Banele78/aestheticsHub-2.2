@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "./Login.css"
 
 import { Link } from 'react-router-dom'
@@ -6,11 +6,14 @@ import { useNavigate } from 'react-router-dom'
 import {Formik, Form, Field, ErrorMessage, validateYupSchema} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { UserProfileContext } from '../../helper/UserProfileContext';
 
 function Login() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
+
+  const {setIsAuthenticated } = useContext(UserProfileContext);
 
   const handleNavigation = () => {
     navigate('/signup'); 
@@ -41,6 +44,9 @@ function Login() {
       navigate('/');
       setEmailError('');
       setPasswordError(' ');
+      if(response.status ==200){
+        setIsAuthenticated(true);
+      }
      console.log(response.data);
     
       resetForm(); // Reset form after successful submission
@@ -49,6 +55,7 @@ function Login() {
       //setErrorMessage(error.response.data);
       if(error.response.status == 404)
       setEmailError(error.response.data);
+      setIsAuthenticated(false);
 
       if(error.response.status == 401)
         setPasswordError(error.response.data);

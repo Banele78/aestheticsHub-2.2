@@ -7,10 +7,12 @@ import Login from './Components/Login/Login';
 import SignUp from './Components/Login/SignUp';
 import AddContent from './Components/Content/AddContent/AddContent';
 import Editprofile from './Components/ViewProfile/MyContent/Edit profile/Editprofile';
+import { UserProfileProvider } from './helper/UserProfileContext';
 
 function App() {
 
   return (
+    <UserProfileProvider>
     <Router>
       
        <Routes>
@@ -26,6 +28,7 @@ function App() {
     
     
     </Router>
+    </UserProfileProvider>
     
   )
 }

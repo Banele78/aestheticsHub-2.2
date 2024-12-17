@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./Navbar.css"
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import ViewProfile from '../ViewProfile/ViewProfile'
+import { UserProfileContext } from '../../helper/UserProfileContext';
 
 function Navbar() {
 
   const [login, setLogin] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+ 
+
+  const { userProfile, loading, error,isAuthenticated } = useContext(UserProfileContext);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : 'auto';
@@ -17,59 +20,51 @@ function Navbar() {
     };
   }, [open]);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api', {
-          // Necessary for sending cookies
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
   
-        if (response.status === 200) {
-          setIsAuthenticated(true);
-          console.log('User is authenticated:', response.data);
-        } else {
-          setIsAuthenticated(false);
-          console.warn('Unexpected response status:', response.status);
-        }
-      } catch (error) {
-        setIsAuthenticated(false);
-        if (error.response) {
-          console.error('Authentication failed with server response:', error.response);
-        } else {
-          console.error('Authentication request failed:', error.message);
-        }
-      }
-    };
-  
-    checkAuth();
-  }, []);
-  
-
   return (
     <div>
       
      <div className="navbar">
-     <img src="./Group 6.png" className='logo'/>
-     
+     <img src="./Group 6.png" className='logo mobile'/>  
      <div className="search">
      <input type="text" placeholder="e.g wedding dress"/>
      </div>
-     
-     <div className="icons">
+     <div className="icons mobile">
      <img src="./Group 23.png"/>
     <Link to="/addContent"> <img src="./PlusCircle.png" /></Link>
-
-     {isAuthenticated ?  <img src="./Ellipse 2.png" onClick={() => setOpen(prev => !prev)}/>  :
+     {isAuthenticated ?  
+              <img src={`http://localhost:8080/api/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
+              onClick={() => setOpen(prev => !prev)}
+              className="user"/>
+            
+       :
      <Link to="/login"> <img src="./user.png" className='user'/></Link> 
      }
-     
-     
-    
      </div>
+
+     
+
+     <div className="bottom-bar">
+   
+  
+    <img src="./Group 6.png" className="logo" />
+      <img src="./Group 23.png" />
+      <Link to="/addContent"><img src="./PlusCircle.png" /></Link>
+      {isAuthenticated ? (
+        <img src={`http://localhost:8080/api/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
+        onClick={() => setOpen(prev => !prev)}
+        className="user"/>
+      ) : (
+        <Link to="/login">
+          <img src="./user.png" className="user" />
+        </Link>
+      )}
+   
+  </div>
      </div>
+
+
+
      {open && <ViewProfile open={open}  setOpen={setOpen}/>}
     </div>
   )

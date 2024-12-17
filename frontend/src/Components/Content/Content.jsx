@@ -3,12 +3,34 @@ import "./content.css"
 import Navbar from '../NavBar/Navbar'
 import Comments from '../comments/Comments';
 import axios from 'axios';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import MapsUgcIcon from '@mui/icons-material/MapsUgc';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import CommentIcon from '@mui/icons-material/Comment';
 
 function Content() {
   const [open, setOpen] = useState(null);
   const [likedPosts, setLikedPosts] = useState([]);
   const [content, setContent] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const categories = [
+    { value: "all", label: "All" },
+    { value: "singer-rappers", label: "Singer/Rappers" },
+    { value: "fashion", label: "Fashion" },
+    { value: "drawing-paintings", label: "Drawing/Paintings" },
+    { value: "books-writing", label: "Books/Writing" },
+    { value: "photographers", label: "Photographers" },
+  ];
+
+  // const [content, setContent] = useState([
+  //   "photographer",
+  //   "photographers",
+  //   "drawings",
+  //   "photographers (1)",
+  //   "photographers (2)"
+  // ]);
 
   const FALLBACK_IMAGE = './fallback.png';
 
@@ -28,7 +50,7 @@ function Content() {
         //   ...post,
         //   likedByUser: likedPosts.includes(post.id),
         // }));
-        setContent(response.data);
+       setContent(response.data);
         setLoading(false);
         console.log(response.data)
       })
@@ -60,16 +82,19 @@ function Content() {
     <div>
       <Navbar/>
      
-      <div className="category">
-        <ul>
-            <li>All</li>
-            <li>Singer/Rappers</li>
-            <li>Fashion</li>
-            <li>Drawing/Paintings</li>
-            <li>Books/writing</li>
-            <li>Photographers</li>
-        </ul>
-      </div>
+    
+    
+
+<div className="category">
+  <select className="styled-dropdown">
+    {categories.map((category) => (
+      <option key={category.value} value={category.value}>
+        {category.label}
+      </option>
+    ))}
+  </select>
+</div>
+
 
       <div className="view">Most Popular</div>
 
@@ -84,20 +109,34 @@ function Content() {
                   onError={(e) => (e.target.src = FALLBACK_IMAGE)}
                 />
               </div>
+              <div className='contentInfo'>
+                <div className='info'>
+                <p>{post.artistType}</p>
+                <p className='date'>
+  {new Date(post.createdDate).toLocaleDateString('en-ZA', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })}
+</p>
+                </div>
+           
               <div className="icon">
-                <img
-                  src={post.likedByUser ? './back.png' : './Heart.png'}
-                  alt="Heart"
-                  onClick={() => Like(post.id)}
-                  loading="lazy"
-                />
-                <img
-                  src="./ChatFill.png"
-                  alt="Chat"
+                  {post.likedByUser ? ( 
+                    <FavoriteIcon className='IconColor' onClick={() => Like(post.id)}/>
+                     
+                  ) : ( 
+                    <FavoriteBorderOutlinedIcon className='IconColor' onClick={() => Like(post.id)}/>
+                  )}
+               
+
+                <CommentIcon className='IconColor'
                   onClick={() => setOpen(open === post.id ? null : post.id)}
                 />
-                <img src="./SendFill.png" alt="Send" />
+               
               </div>
+              </div>
+             
               {open === post.id && <Comments open={open} setOpen={setOpen} />}
             </div>
           ))
@@ -105,55 +144,30 @@ function Content() {
           <p>No posts available.</p>
         )}
 
-        {/* Start of most viewed*/}
-       
-        {/* Start of recently viewed*/}
-        <div className="recentView">
 
-        <div className="view">Recently uploaded</div>
-
-        <div className="container2">
-         <div className="content">
-         <div className="icon">
-            <img src="./Heart.png"/>
-            <img src="./ChatFill.png"/>
-            <img src="./SendFill.png"/>
-            </div>
-        </div>
-
-    <div className="content">
-   
-             <img src="./art/photographers (5).png"/>        
+{/* {content.map((picture, index) => (
+            <div key={index} className="content">
+              <div className='image'>
+             <img src={`./art/${picture}.png`}/>
+          </div>
             <div className="icon">
-            <img src="./Heart.png"/>
-            <img src="./ChatFill.png"/>
-            <img src="./SendFill.png"/>
+            <FavoriteBorderOutlinedIcon className='IconColor' onClick={() => Like(post.id)}/>
+          
+           
+            <CommentIcon className='IconColor' onClick={() => setOpen(prev => !prev)}/>
+           
+            <img src="./SendFill.png" alt="Send" />
             </div>
-    
-   </div>
+            </div>
+          ))} */}
 
-   <div className="content">
-   <img src="./art/photographers (4).png"/>
-   <div className="icon">
-            <img src="./Heart.png"/>
-            <img src="./ChatFill.png"/>
-            <img src="./SendFill.png"/>
-            </div>
-</div>
-<div className="content">
-<img src="./art/photographers (6).png"/>
-<div className="icon">
-            <img src="./Heart.png"/>
-            <img src="./ChatFill.png"/>
-            <img src="./SendFill.png"/>
-            </div>
-</div>
 
-   </div>
- 
-   </div>
+
+       
+
+      
       </div>
- 
+     
     </div>
   )
 }

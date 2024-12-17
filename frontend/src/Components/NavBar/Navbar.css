@@ -1,20 +1,24 @@
 .navbar{
     display:flex;
     justify-content: space-between;
-    margin-left:60px;
+    margin-left:2%;
     margin-top: 30px;  
-}
+} 
 
 .navbar .logo{
     width: 130px;
+    height: 61px;
 }
 
+.navbar .bottom-bar{
+    display: none;
+}
 .search{
-    margin-left: 5%;
+  
     
     input{
         border-radius: 34px;
-        width: clamp(350px, 50vw, 550px);
+        width: clamp(300px, 40vw, 550px);
         height: 45px;
         border:none; 
         background-image: url('./Group 2.png');  
@@ -34,8 +38,8 @@
    
 }
 
-.navbar .icons img{
-    padding-right:25px;
+.navbar  img{
+    margin-right:25px;
     cursor: pointer; 
     width: 40px;
     height: 41px;
@@ -43,6 +47,62 @@
 
 .user{
     
-        width: 50px;
-        height: 51px;
+    border-radius: 50%; /* makes the image circular */
+    object-fit: cover; /* ensures the image covers the circle without distortion */
+}
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    /* Navbar layout for smaller screens */
+    .navbar {
+        flex-direction: column; /* Stack search box on top */
+        align-items: center; /* Center items horizontally */
+        margin: 0; /* Reset margin */
+    }
+
+    .search {
+        margin: 20px 0; /* Add spacing around the search box */
+        width: 100%; /* Full width for smaller screens */
+        text-align: center;
+    }
+
+    .search input{
+      
+        width: 70%;
+        
+       
+    }   
+
+    /* Bottom Section for Logo and Icons */
+    .navbar .bottom-bar {
+        position: fixed; /* Fix at the bottom */
+        bottom: 0;
+        left: 0;
+        width: 100%; /* Full width container */
+        display: flex; /* Arrange logo and icons horizontally */
+        justify-content: space-between;
+        align-items: center; /* Center vertically */
+        background-color: black; /* Background color for the fixed section */
+        padding: 10px 20px 10px 10px; /* Add padding */
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Shadow for better visibility */
+    }
+
+    .navbar  img{
+       
+        cursor: pointer; 
+        width: 25px;
+        height: 26px;
+       }
+    
+    .navbar .logo {
+        margin: 0; /* Reset margin for the logo */
+        width: 80px; /* Prevent the logo from taking too much width */
+        height: 40px;
+    }
+
+    
+    .mobile{
+        display: none;
+    }
 }
