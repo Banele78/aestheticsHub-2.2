@@ -8,29 +8,28 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import CommentIcon from '@mui/icons-material/Comment';
+import {axiosInstance, getImageUrl} from '../../helper/axiosConfig';
 
 function Content() {
   const [open, setOpen] = useState(null);
   const [likedPosts, setLikedPosts] = useState([]);
   const [content, setContent] = useState([]);
+  const [contentByLikes, setContentByLikes] = useState([]);
+  const [contentByDate, setContentByDate] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState('all'); // Added state to track the selected category
+  const [limit, setLimit] = useState(30); // Limit for displayed content
 
   const categories = [
     { value: "all", label: "All" },
     { value: "singer-rappers", label: "Singer/Rappers" },
     { value: "fashion", label: "Fashion" },
-    { value: "drawing-paintings", label: "Drawing/Paintings" },
+    { value: "painter", label: "Drawing/Paintings" },
     { value: "books-writing", label: "Books/Writing" },
     { value: "photographers", label: "Photographers" },
   ];
 
-  // const [content, setContent] = useState([
-  //   "photographer",
-  //   "photographers",
-  //   "drawings",
-  //   "photographers (1)",
-  //   "photographers (2)"
-  // ]);
+  
 
   const FALLBACK_IMAGE = './fallback.png';
 
@@ -43,37 +42,57 @@ function Content() {
   }, [open]);
 
   useEffect(() => {
-    // Fetch posts from API
-    axios.get('http://localhost:8080/api/posts')
-      .then((response) => {
-        // const posts = response.data.map((post) => ({
-        //   ...post,
-        //   likedByUser: likedPosts.includes(post.id),
-        // }));
-       setContent(response.data);
-        setLoading(false);
-        console.log(response.data)
-      })
-      .catch((error) => {
+    // Fetch posts based on selected category
+    setLoading(true); // Ensure loading is true before the request
+    const fetchPosts = async () => {
+      try {
+       
+        const response = await axiosInstance.get(`/${selectedCategory}/posts`);
+
+       // Sort by number of likes
+    const ByLikes = [...response.data].sort((a, b) => b.likes.length - a.likes.length);
+
+    // Sort by date
+    const ByDate = [...response.data].sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+        setContentByLikes(ByLikes);
+        setContentByDate(ByDate);
+        //setContent(sortedPosts);
+       
+      } catch (error) {
         console.error('Error fetching posts:', error);
+      } finally {
         setLoading(false);
-      });
-  }, [likedPosts]);
+      }
+    };
+    
+    fetchPosts();
+  }, [selectedCategory]); // Fetch posts when the selected category changes
 
   const Like = async (postId) => {
     try {
-      await axios.post('http://localhost:8080/api/like', { postId });
-
-      // Toggle the liked state
-      setLikedPosts((prevLikedPosts) =>
-        prevLikedPosts.includes(postId)
-          ? prevLikedPosts.filter((id) => id !== postId) // Remove from liked
-          : [...prevLikedPosts, postId] // Add to liked
+      // Make the POST request to like/unlike the post
+      await axiosInstance.post('/like', { postId });
+  
+      // Update the `content` state optimistically by toggling the like state
+      setContentByLikes((prevContent) => 
+        prevContent.map((post) =>
+          post.id === postId
+            ? { ...post, likedByUser: !post.likedByUser } // Toggle the like status of the post
+            : post
+        )
+      );
+      setContentByDate((prevContent) => 
+        prevContent.map((post) =>
+          post.id === postId
+            ? { ...post, likedByUser: !post.likedByUser } // Toggle the like status of the post
+            : post
+        )
       );
     } catch (error) {
       console.error('Error liking post:', error);
     }
   };
+  
 
   if (loading) {
     return <p>Loading...</p>; // Display loading message while fetching
@@ -86,7 +105,9 @@ function Content() {
     
 
 <div className="category">
-  <select className="styled-dropdown">
+  <select className="styled-dropdown"
+   value={selectedCategory}
+   onChange={(e) => setSelectedCategory(e.target.value)}>
     {categories.map((category) => (
       <option key={category.value} value={category.value}>
         {category.label}
@@ -95,16 +116,15 @@ function Content() {
   </select>
 </div>
 
-
       <div className="view">Most Popular</div>
 
       <div className="container">
-        {content.length > 0 ? (
-          content.map((post) => (
+        {contentByLikes.length > 0 ? (
+          contentByLikes.slice(0, limit).map((post) => (
             <div key={post.id} className="content">
               <div className="image">
                 <img
-                  src={`http://localhost:8080/api/posts/${post.id}/image`}
+                  src={`${getImageUrl}/posts/${post.id}/image`}
                   alt={post.artname || 'Post Image'}
                   onError={(e) => (e.target.src = FALLBACK_IMAGE)}
                 />
@@ -143,28 +163,6 @@ function Content() {
         ) : (
           <p>No posts available.</p>
         )}
-
-
-{/* {content.map((picture, index) => (
-            <div key={index} className="content">
-              <div className='image'>
-             <img src={`./art/${picture}.png`}/>
-          </div>
-            <div className="icon">
-            <FavoriteBorderOutlinedIcon className='IconColor' onClick={() => Like(post.id)}/>
-          
-           
-            <CommentIcon className='IconColor' onClick={() => setOpen(prev => !prev)}/>
-           
-            <img src="./SendFill.png" alt="Send" />
-            </div>
-            </div>
-          ))} */}
-
-
-
-       
-
       
       </div>
      

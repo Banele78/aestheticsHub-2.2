@@ -7,6 +7,7 @@ import {Formik, Form, Field, ErrorMessage, validateYupSchema} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { UserProfileContext } from '../../helper/UserProfileContext';
+import {axiosInstance} from '../../helper/axiosConfig';
 
 function Login() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ function Login() {
 
   const onSubmit = async (data, { resetForm }) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/login', data, {
+      const response = await axiosInstance.post('/login', data, {
         headers: {
           'Content-Type': 'application/json',
           

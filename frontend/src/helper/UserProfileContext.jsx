@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import {axiosInstance }from './axiosConfig'
 
 // Create Context
 export const UserProfileContext = createContext();
@@ -14,7 +15,7 @@ export const UserProfileProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/getUserProfile');
+        const response = await axiosInstance.get('/getUserProfile');
         setUserProfile(response.data);
         setError(null);
         if(response.status ==200){

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import {axiosInstance }from '../../../../helper/axiosConfig';
 
 function Editprofile() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -49,7 +50,7 @@ function Editprofile() {
     formData.append('profilePic', data.profilePic);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/createProfile', formData, {
+      const response = await axiosInstance.post('/createProfile', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Profile updated successfully!');

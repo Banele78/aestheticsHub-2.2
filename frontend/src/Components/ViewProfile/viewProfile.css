@@ -9,29 +9,29 @@
 p{
   color: black;
 }
-h1{
-  color: pink; 
-}
-.profile{
-    background-color: #ffff;
-    width: 449px;
-    height: auto;
-    position: fixed;  
-    right: 50px;
-    top:110px;
-    border-radius: 32px;
-   overflow-y: hidden;
-   padding-right: 10px;
-   }
 
-   .scroll-content {
-    height: 100%;
-    overflow-y: scroll; /* Enables scrolling only within the inner container */    
+.profile {
+  background-color: #ffff;
+  width: 350px;
+  max-height: calc(100vh - 80px); /* Keeps the container within the viewport */
+  position: fixed;  
+  right: 50px;
+  top: 80px;
+  border-radius: 32px;
+  overflow: hidden; /* Prevents the profile itself from scrolling */
+  display: flex; /* Enables flexbox for better layout control */
+  flex-direction: column; /* Ensures children stack vertically */
+  padding-right: 1px;
+}
+
+.scroll-content {
+  flex: 1; /* Takes up remaining space within the parent container */
+  overflow-y: auto; /* Enables scrolling for overflowing content */
 }
 
 .profile .profilePic {
-  width: 110px; /* Set width and height to be equal */
-  height: 110px; 
+  width: 50px; /* Set width and height to be equal */
+  height: 50px; 
   display: flex; /* Centering with flexbox */
   justify-content: center;
   align-items: center;
@@ -54,41 +54,44 @@ h1{
   justify-content: center; /* Centers horizontally */
   align-items: center; /* Centers vertically */
   flex-direction: column;
-    margin-top: 20px; 
+   
    }
 
    .profile .account h1 {
     margin-top: 10px;
     margin-bottom: 10px; /* Adjust this value as needed */
     color: black;
+    font-size: 30px;
   }
   
   .profile .account h2 {
-    margin-top: 5px; /* Adjust to control spacing above h2 */
-    margin-bottom: 10px; /* Adjust for spacing below h2 */
+    margin-top: 0; /* Adjust to control spacing above h2 */
+    margin-bottom: 0; 
+    font-size: 20px;/* Adjust for spacing below h2 */
   }
   
-  .profile .account img {
+  .profile .account .Stars img {
+    width: 15px;
     margin-top: 10px; /* Adjust for spacing above the image */
     margin-bottom: 10px; /* Adjust for spacing below the image */
   }
 
   .profile p {
-    font-size: 25px;
+    font-size: 22px;
     margin-left: 3%;
     color: black;
   
   }
 
   .profile .image{
-    position: fixed;
-    top:13%;
-    right: 3.5%;
+    position: sticky;
+    padding: 10px;
+   text-align: right;
     cursor: pointer;
   }
 
   .scroll-content::-webkit-scrollbar {
-    width: 2px;
+    width: 3px;
   }
    
   .scroll-content::-webkit-scrollbar-thumb {
@@ -97,7 +100,15 @@ h1{
     border: none;
    
   }
-  
-  
+
+  @media (max-width: 768px) {
+    .profile {
+      width: 100%; /* Full width for smaller screens */
+      min-height: 100vh; /* Occupies the entire height of the viewport */
+      right: 0;
+      top: 0;
+      border-radius: 0; /* Edge-to-edge design */   
+  }
+    }
   
   

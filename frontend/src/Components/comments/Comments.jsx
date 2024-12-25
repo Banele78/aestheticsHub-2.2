@@ -2,6 +2,14 @@ import React, { useEffect, useState } from 'react';
 import "./comments.css";
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import MapsUgcIcon from '@mui/icons-material/MapsUgc';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import CommentIcon from '@mui/icons-material/Comment';
+import SendIcon from '@mui/icons-material/Send';
+import {axiosInstance} from '../../helper/axiosConfig';
+
 
 function Comments({ open, setOpen }) {
     const [comments, setComments] = useState([]);
@@ -14,12 +22,12 @@ function Comments({ open, setOpen }) {
     const handleAddComment = async (values, { resetForm }) => {
         setSubmitting(true);
         try {
-            await axios.post('http://localhost:8080/api/comment', values, {
+            await axiosInstance.post('/comment', values, {
                 headers: { 'Content-Type': 'application/json' },
             });
     
             // Fetch the updated comments list
-            const response = await axios.get(`http://localhost:8080/api/${open}/getComments`);
+            const response = await axiosInstance.get(`/${open}/getComments`);
             setComments(response.data);
     
             resetForm();
@@ -33,8 +41,8 @@ function Comments({ open, setOpen }) {
 
     useEffect(() => {
         setLoading(true);
-        axios
-            .get(`http://localhost:8080/api/${open}/getComments`)
+        axiosInstance
+            .get(`/${open}/getComments`)
             .then((response) => {
                 setComments(response.data);
                 setLoading(false);
@@ -49,22 +57,23 @@ function Comments({ open, setOpen }) {
     return (
         <div className={`comments ${open ? 'open' : ''}`}>
             <div className="box">
-                <div className="box2">
-                    <div className="backB">
+            <div className="backB">
                         <img
                             src="./Vector.png"
                             alt="Back"
                             onClick={() => setOpen((prev) => !prev)}
                         />
                     </div>
+                <div className="box2">
+                 
 
                     {loading ? (
-                        <p>Loading comments...</p>
+                        <div className="spinner"><span className="dot">.</span><span className="dot">.</span><span className="dot">.</span></div>
                     ) : error ? (
                         <p className="error">{error}</p>
                     ) : comments.length > 0 ? (
                         comments.map((comment) => (
-                            <div key={comment.id} className="view">
+                            <div key={comment.id} className="comment">
                                 <p className="username">
                                     {comment.user?.userProfile?.nickName || "Anonymous"}
                                 </p>
@@ -72,8 +81,9 @@ function Comments({ open, setOpen }) {
                                     <p>{comment.comment || "No comment available"}</p>
                                 </div>
                                 <div className="icons">
-                                    <img src="./Heart.png" alt="Like" />
-                                    <img src="./ChatFill.png" alt="Comment" />
+                                <FavoriteBorderOutlinedIcon className='IconColor' />
+                                  
+                                <CommentIcon className='IconColor' />
                                 </div>
                             </div>
                         ))
@@ -81,23 +91,33 @@ function Comments({ open, setOpen }) {
                         <p className="NotFound">No comments found</p>
                     )}
 
-                    <Formik initialValues={initialValues} onSubmit={handleAddComment}>
-                        <Form>
-                            <div className="textarea-container">
-                                <Field
-                                    as="textarea"
-                                    name="comment"
-                                    rows="10"
-                                    cols="30"
-                                    placeholder="Add a comment"
-                                />
-                                <button type="submit" className="send-button" disabled={submitting}>
-                                    {submitting ? "Sending..." : <img src="./SendFill.png" alt="Send" />}
-                                </button>
-                            </div>
-                            {error && <p className="form-error">{error}</p>}
-                        </Form>
-                    </Formik>
+<Formik
+  initialValues={initialValues}
+  onSubmit={handleAddComment}
+>
+  {({ values }) => (
+    <Form>
+      <div className="textarea-container">
+        <Field
+          as="textarea"
+          name="comment"
+          rows="10"
+          cols="30"
+          placeholder="Add a comment"
+        />
+        <button
+          type="submit"
+          className="send-button"
+          disabled={!values.comment || values.comment.trim() === "" || submitting}
+        >
+          {submitting ? <div className='spinner'></div> : <SendIcon />}
+        </button>
+      </div>
+      {error && <p className="form-error">{error}</p>}
+    </Form>
+  )}
+</Formik>
+
                 </div>
             </div>
         </div>

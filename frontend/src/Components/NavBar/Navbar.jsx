@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios';
 import ViewProfile from '../ViewProfile/ViewProfile'
 import { UserProfileContext } from '../../helper/UserProfileContext';
+import {axiosInstance, getImageUrl} from '../../helper/axiosConfig';
 
 function Navbar() {
 
@@ -31,9 +32,9 @@ function Navbar() {
      </div>
      <div className="icons mobile">
      <img src="./Group 23.png"/>
-    <Link to="/addContent"> <img src="./PlusCircle.png" /></Link>
+    <Link to="/AddContent"> <img src="./PlusCircle.png" /></Link>
      {isAuthenticated ?  
-              <img src={`http://localhost:8080/api/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
+              <img src={`${getImageUrl}/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
               onClick={() => setOpen(prev => !prev)}
               className="user"/>
             
@@ -51,7 +52,7 @@ function Navbar() {
       <img src="./Group 23.png" />
       <Link to="/addContent"><img src="./PlusCircle.png" /></Link>
       {isAuthenticated ? (
-        <img src={`http://localhost:8080/api/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
+        <img src={`${getImageUrl}/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
         onClick={() => setOpen(prev => !prev)}
         className="user"/>
       ) : (

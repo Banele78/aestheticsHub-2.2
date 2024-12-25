@@ -1,5 +1,6 @@
 .comments {
     background-color: rgba(255, 255, 255, 0.2);
+   
     width: 100%;
     height: 100%;
     position: fixed; /* Use fixed to position it relative to the viewport */
@@ -24,7 +25,7 @@
   
    .box{
     background-color: #2C2626;
-    width: 45%;
+    width: 650px;
     height: 46%;
     position: fixed;
     bottom: 50px;
@@ -33,10 +34,13 @@
     border-radius: 5px;
    }
 
+   
+
    .box2{
     background-color: rgba(255, 255, 255, 0.0);
     width: 100%;
     height: 100%;
+   
     flex-direction: column;
     align-items: center; /* Center child elements horizontally */
     justify-content: center;  
@@ -46,8 +50,46 @@
     text-align: center;
    }
 
-  .box .view{
-    width: 79%;
+    .spinner {
+    position: absolute; /* Position relative to .box2 */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+    font-size: 30px;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .dot {
+    display: inline-block;
+    opacity: 0;
+    animation: dot-blink 1.5s infinite;
+  }
+  
+  .dot:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .dot:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  
+  .dot:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  
+  @keyframes dot-blink {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .box .comment{
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -55,43 +97,52 @@
     margin-bottom: -30px; /* Adjust this value to control spacing between views */
     padding: 0; /* Ensure no extra padding */
   
-    .input{
-        border-radius: 16px;
-        width: 90%;
-       max-width:611.55px;
-        height: auto;
-        background-color: rgba(255, 255, 255, 0.4);
-        font-size: 17px;   
-
-        p{
-            margin-left: 7px;
-            color: #ffff;
-        }
-    }
-    
-    .icons{
-      justify-content: space-between;
-      padding: 5px;
-      padding-right:0px;
-      margin-left: 79%;
-      margin-right: 10px;
-      
-  
-      img{
-          padding-right:10px;
-          cursor: pointer;
-          width: 18px;
-          margin-bottom: 15px;
-         }
-  
-  }
 }
 
-.username{  
-    font-size: 60%;
-    color: #0F7CD6;   
-    margin-left: 73%;
-    margin-bottom: 0px;
+.comment .input{
+  border-radius: 16px;
+  width: 76%;
+  max-width:611.55px;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.4);
+  font-size: 15px; 
+
+    
+}
+
+.input p{
+  margin-left: 7px;
+  margin-right: 7px;
+  color: #ffffff;
+  font-size: 17px;
+  white-space: normal; /* Ensure text wraps */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  display: block; 
+}
+
+.comment .icons{
+  justify-content: space-between;
+  padding: 5px;
+  padding-right:0px;
+  margin-left: auto; /* Push it to the right */
+  margin-bottom: 15px;
+  display: flex; /* Optional: ensures proper layout in flex context */
+  margin-right: 85px;
+ 
+}
+
+.comment .icons .IconColor{
+  width: 19px;
+}
+
+ .comment .username{  
+  font-size: 17px;
+  color: #0F7CD6;
+  margin-left: auto; /* Push it to the right */
+  margin-bottom: 0px;
+  display: flex; /* Optional: ensures proper layout in flex context */
+  margin-right: 89px;
     
 }
 
@@ -107,59 +158,178 @@
     border-radius: 10px;
     background: none;
   }
+
+  
   
   .box::-webkit-scrollbar-thumb {
     background-color: #71abda;
     border-radius: 10px;
     border: none;
+    transition: width 0.3s;
   }
   
-  
+  .box:hover::-webkit-scrollbar {
+    width: 5px; /* Change the width */
+   
+}
+
+.box::-webkit-scrollbar-track:hover {
+  background: #555; /* Darker color on hover */
+ width: 100px;
+}
   
 
   
 
  /* Styling for the fixed textarea container */
 .textarea-container {
-  width: 45%;
+  width: 650px;
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   background-color: #2C2626;
+  text-align: center;
 }
 
 textarea {
-  width: calc(100% - 30px);
-  height: 50px;
+  resize: none; 
+  width: calc(67% - 30px);
+  height: 30px;
   border: 1px solid white;
   padding: 10px;
-  font-size: 18px;
+  font-size: 14px;
   color: #fff;
   background-color: #2C2626;
-  
- margin-left:3px;
+ margin-right: 70px;
+border: none;
  border-radius: 2px;
+ 
+}
+
+textarea::-webkit-scrollbar {
+  width: 2px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border-radius: 10px;
+  background: none;
+}
+
+
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #71abda;
+  border-radius: 10px;
+  border: none;
+  transition: width 0.3s;
+  background: none;
+}
+
+textarea:focus {
+  outline:none ; /* Removes default focus outline */
+  border: none;  /* Removes border when input is focused */
 }
 
 .send-button {
   position: absolute;
-  right: 10px;
-  bottom: 25px;
+  right: 90px;
+  bottom: 13px;
   height: 30px;
-  padding: 0 10px;
-  
-  
+ 
+  width: 20px;
+  background: none;
   border-radius: 4px;
   cursor: pointer;
   
 }
 
 .backB{
- 
-  position: fixed;
-  bottom: calc(100% - 47%);
-  left: 29%;
-  transform: translateX(-50%);
-  background-color: #2C2626;
+  position: sticky; /* Keeps it within the scrolling context */
+    top: 0; /* Position at the top of its container */
+    z-index: 10; /* Ensures it stays above other content */
+    background-color: #2C2626; /* Optional: Match the background color */
+    padding: 6px; /* Optional: Add padding for better appearance */
+}
+
+.backB img{
+  width: 27px;
+}
+
+.send-button .spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Light gray background */
+  border-top: 4px solid #007bff; /* Blue spinner bar */
+  border-radius: 50%;
+  width: 5px; /* Adjust size */
+  height: 0;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+@media (max-width: 650px) {
+  .box{
+    width: 100%;
+   }
+
+   
+
+   .textarea-container {
+    width: 100%;
+   
+  }
+
+  .comment .username{  
+   
+    margin-right: 14%;
+      
+  }
+
+  .comment .icons{
+   
+    margin-right: 13%;
+  
+  }
+
+  
+  
+}
+
+
+@media (max-width : 480px){
+
+  .comment .input{
+    width: 95%; 
+  }
+  .comment .username{  
+    margin-right: 6%;   
+  }
+  .comment .icons{
+    margin-right: 4%;   
+  }
+
+  .textarea-container {
+   
+    text-align: left;
+  }
+
+  textarea {
+    width: calc(80% - 30px);
+   
+  }
+
+  .send-button {
+    right: 40px;
+  }
+
 }

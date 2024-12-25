@@ -4,6 +4,7 @@ import {Formik, Form, Field, ErrorMessage, validateYupSchema} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {axiosInstance} from '../../helper/axiosConfig';
 
 function SignUp() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ function SignUp() {
 
 const onSubmit = async (data, { resetForm }) => {
   try {
-    const response = await axios.post('http://localhost:8080/api/register', data, {
+    const response = await axiosInstance.post('/register', data, {
       headers: {
         'Content-Type': 'application/json',
       },

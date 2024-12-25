@@ -2,7 +2,10 @@ package com.aestheticsHub.Backend.DTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.aestheticsHub.Backend.model.Likes;
 import com.aestheticsHub.Backend.model.Post;
 
 public class PostDTO {
@@ -14,6 +17,7 @@ public class PostDTO {
     private LocalDate createdDate;
     private LocalTime createdTime;
     private boolean likedByUser;
+      private List<Likes> likes = new ArrayList<>();
 
     public PostDTO(Post post, boolean likedByUser) {
         this.id = post.getId();
@@ -23,6 +27,7 @@ public class PostDTO {
         this.contentType = post.getContentType();
         this.createdDate = post.getCreatedDate();
         this.createdTime = post.getCreatedTime();
+        this.likes = post.getLikes();
         this.likedByUser = likedByUser;
     }
 
@@ -90,6 +95,15 @@ public class PostDTO {
         this.likedByUser = likedByUser;
     }
 
+    public List<Likes> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Likes> likes) {
+        this.likes = likes;
+    }
+
+    
     
 
     // Getters and setters (optional, depending on use case)

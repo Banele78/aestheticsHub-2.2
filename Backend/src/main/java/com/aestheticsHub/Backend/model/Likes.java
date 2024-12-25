@@ -23,13 +23,13 @@ public class Likes {
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id", nullable = false)//used to join tables
     @JsonIgnoreProperties("likes")// to avoid a inifinite loop
-   
+    @JsonIgnore
     private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("posts")
-   
+    @JsonIgnore
     private User user;
 
     public Long getId() {

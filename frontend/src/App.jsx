@@ -9,6 +9,7 @@ import AddContent from './Components/Content/AddContent/AddContent';
 import Editprofile from './Components/ViewProfile/MyContent/Edit profile/Editprofile';
 import { UserProfileProvider } from './helper/UserProfileContext';
 
+
 function App() {
 
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/addContent" element={<AddContent/>} />
       <Route path="/editProfile" element={<Editprofile/>} />
+    
      
        </Routes>
      

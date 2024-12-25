@@ -1,0 +1,67 @@
+.Setcontent {
+    background-color: pink;
+    width: var(--content-size);
+    height: var(--content-size);
+    border-radius: 20px;
+    transition: background-color 0.3s, border-radius 0.3s;
+    margin-top: 20px;
+    position: relative;  /* Ensure it can be a container for the cropper */
+  }
+
+  
+  .Setcontent  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+  }
+  
+  .backdrop {
+    position: fixed;
+    background-color: black;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .crop-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+  }
+  
+  .controls {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 80px;
+  }
+  
+  .controls-upper-area {
+    text-align: center;
+  }
+  
+  .slider {
+    width: 50%;
+  }
+  
+  .button-area {
+    text-align: center;
+    margin-top: 2px;
+  }
+  .controls button {
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: black;
+    color: white;
+    border: 1px solid yellow;
+    font-size: 20px;
+  }
+  
+
+
+
+
+  

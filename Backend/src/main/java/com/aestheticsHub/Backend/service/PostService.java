@@ -28,6 +28,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    //post a post
     public Post post(String Artname, String artistType, String artPic, String contentType, byte[] Picbytes){
         Long userId = authInterceptor.getId();
         User user = userService.getUserById(userId);
@@ -47,6 +48,14 @@ public class PostService {
 
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);
+    }
+
+
+    public List<Post> getPostsByArtistTypeOrAll (String artistType){
+        if ("all".equalsIgnoreCase(artistType)) {
+            return postRepository.findAll(); // Fetch all posts
+        }
+         return postRepository.findByArtistType(artistType);
     }
 
 }

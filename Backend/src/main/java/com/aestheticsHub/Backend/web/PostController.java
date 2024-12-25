@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,9 +45,26 @@ public class PostController {
     @Autowired
     private UserService userService;
 
-//Do not forget to add date and time posted
-@GetMapping("/api/posts")
-public ResponseEntity<List<PostDTO>> getPosts() {
+//create post
+    @PostMapping("/api/post")
+    public ResponseEntity<String> createPost(@RequestPart("Artname") String Artname,
+    @RequestPart("artistType") String artistType,
+    @RequestPart("artPic") MultipartFile artPic,
+    BindingResult result
+    ) throws IOException{
+
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body("Invalid user data");
+        }
+        postService.post(Artname, artistType, artPic.getOriginalFilename(), artPic.getContentType(), artPic.getBytes());
+         return ResponseEntity.ok("post created");
+    }
+
+
+
+    //get posts by artistType
+@GetMapping("/api/{artistType}/posts")
+public ResponseEntity<List<PostDTO>> getPostsByArtistType(@PathVariable String artistType) {
     // Get the ID of the authenticated user
     Long userId = authInterceptor.getId();
 
@@ -60,11 +78,12 @@ public ResponseEntity<List<PostDTO>> getPosts() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
     }
 
-    // Retrieve all posts
-    List<Post> posts = postService.getposts();
-    if (posts.isEmpty()) {
+     // Retrieve all posts
+     List<Post> posts = postService.getPostsByArtistTypeOrAll(artistType);;
+       if (posts.isEmpty()) {
         return ResponseEntity.noContent().build();
     }
+   
 
     // Retrieve all likes for the user in a single query
     List<Likes> userLikes = likesService.getLikeByUser(user);
@@ -84,7 +103,7 @@ public ResponseEntity<List<PostDTO>> getPosts() {
 
 
 //image
-    @GetMapping("/api/posts/{id}/image")
+@GetMapping("/api/posts/{id}/image")
 public ResponseEntity<byte[]> getPostImage(@PathVariable Long id) {
     Post post = postService.getPostById(id);
     if (post == null || post.getPicbytes() == null) {
@@ -96,20 +115,5 @@ public ResponseEntity<byte[]> getPostImage(@PathVariable Long id) {
     headers.setContentType(MediaType.valueOf(post.getContentType())); // Adjust based on your image type (e.g., IMAGE_PNG)
     return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
 }
-
-
-    @PostMapping("/api/post")
-    public ResponseEntity<String> createPost(@RequestPart("Artname") String Artname,
-    @RequestPart("artistType") String artistType,
-    @RequestPart("artPic") MultipartFile artPic,
-    BindingResult result
-    ) throws IOException{
-
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body("Invalid user data");
-        }
-        postService.post(Artname, artistType, artPic.getOriginalFilename(), artPic.getContentType(), artPic.getBytes());
-         return ResponseEntity.ok("post created");
-    }
 
 }
