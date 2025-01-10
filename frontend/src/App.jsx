@@ -18,11 +18,11 @@ import ViewUserProfile from './Components/Content/UserProfile/ViewUserProfile';
 function App() {
   return (
     <Router>
-      <UserProvider>
+      
         <UserProfileProvider>
           <Layout />
         </UserProfileProvider>
-      </UserProvider>
+     
     </Router>
   );
 }

@@ -124,7 +124,7 @@ response.addHeader("Set-Cookie", sameSiteCookie);
         userService.deleteUser(id);
     }
 
-    @GetMapping("/api/auth")
+    @GetMapping("/api")
 public ResponseEntity<String> getProtectedData() {
 
    // authInterceptor.preHandle(request, response, authInterceptor);
