@@ -77,8 +77,7 @@ public ResponseEntity<List<PostDTO>> getPostsByArtistType(@PathVariable String a
 ) {
     // Get the ID of the authenticated user
      //get the user profile of the person who is logged in
-       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = (String) authentication.getPrincipal();
+     String userId = authInterceptor.getId();
         User user= userService.getUserById(Long.valueOf(userId));
          UserProfile userProfile= userProfileService.getUserProfile(user);
 
