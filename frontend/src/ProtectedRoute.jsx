@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axiosInstance.get('/auth',{ withCredentials: true } );
+        const response = await axiosInstance.get('',{ withCredentials: true } );
         if (response.status === 200) {
           setIsAuthenticated(true);
         }
