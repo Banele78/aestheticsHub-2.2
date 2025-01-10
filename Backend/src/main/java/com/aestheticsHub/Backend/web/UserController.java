@@ -83,7 +83,7 @@ loginDTO.setToken(token);
 Cookie cookie = new Cookie("authToken", token);
 cookie.setHttpOnly(true);
 cookie.setSecure(true); // 'true' for HTTPS in production
-cookie.setPath("/");
+
 cookie.setMaxAge(17 * 24 * 60 * 60); // 1 week expiry
 
 // Add the cookie (basic attributes)
@@ -91,10 +91,10 @@ response.addCookie(cookie);
 
 // Manually add SameSite=None
 String sameSiteCookie = String.format(
-    "%s=%s; Path=%s; HttpOnly; Secure; SameSite=None; Max-Age=%d",
+    "%s=%s;  HttpOnly; Secure; SameSite=None; Max-Age=%d",
     cookie.getName(),
     cookie.getValue(),
-    cookie.getPath(),
+   
     cookie.getMaxAge()
 );
 response.addHeader("Set-Cookie", sameSiteCookie);

@@ -38,6 +38,6 @@ public class WebConfig implements WebMvcConfigurer {
         // Register the interceptor for all requests or specific ones
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/api/**") // Ensure this path matches your endpoint
-                .excludePathPatterns("/api/login", "/api/register"); // Exclude public endpoints if needed
+                .excludePathPatterns("/api/login", "/api/register", "/api/getUserProfile"); // Exclude public endpoints if needed
     }
 }
