@@ -37,7 +37,7 @@ function Navbar() {
      <img src="/Group 23.png"/>
     <Link to="/addContent"> <img src="/PlusCircle.png" /></Link>
      {isAuthenticated ?  
-              <img src={`${getImageUrl}/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
+              <img src={`${getImageUrl}/userProfile/${1}/ProfileImage`} alt="profile" 
               onClick={() => setOpen(prev => !prev)}
               className="user"/>
             
