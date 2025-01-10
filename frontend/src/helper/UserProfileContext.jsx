@@ -25,10 +25,12 @@ export const UserProfileProvider = ({ children }) => {
           setUserProfile(response.data);
           setIsAuthenticated(true);  // Set authenticated state to true
           setError(null);  // Reset error if the request is successful
+          console.log("userProfile", response.data);
         }
       } catch (err) {
         console.error("Error fetching user profile:", err.response);
         setError("Failed to fetch user profile data");
+        console.log("userProfile", err.data);
         setIsAuthenticated(false);  // In case of error, set as unauthenticated
         navigate("/editProfile");  // Redirect to edit profile page or login
       } finally {

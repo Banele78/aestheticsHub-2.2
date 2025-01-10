@@ -103,8 +103,9 @@ function Editprofile() {
     }
 
     try {
-      const response = await axiosInstance.post('/createProfile', formData, {
+      const response = await axiosInstance.post('/createProfile', { withCredentials: true }, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        
       });
       alert('Profile updated successfully!');
       //resetForm();
