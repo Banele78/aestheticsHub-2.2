@@ -47,7 +47,7 @@ function ViewUserProfile() {
             useEffect(() => {
               const fetchPosts = async () => {
                 try {
-                  const response = await axiosInstance.get(`/${userProfileId}/getUserProfiles`);
+                  const response = await axiosInstance.get(`/${userProfileId}/getUserProfiles`, { withCredentials: true });
                   setPosts(response.data.posts);
                   setUserProfiles(response.data);
                   console.log("posts :" , response.data.posts)

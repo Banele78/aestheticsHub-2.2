@@ -90,9 +90,9 @@ function Content() {
    
       try {
       
-        const response = await axiosInstance.get(`/${selectedCategory}/posts`);
+        const response = await axiosInstance.get(`/${selectedCategory}/posts`, { withCredentials: true });
 
-        const userProfiles = await axiosInstance.get(`/${selectedCategory}/getAllProfiles`);
+        const userProfiles = await axiosInstance.get(`/${selectedCategory}/getAllProfiles`, { withCredentials: true });
         setProfiles(userProfiles.data);
         console.log(response.data);
 
