@@ -20,7 +20,7 @@ export const UserProfileProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         // Assuming the server responds with status 200 and user profile data
-        const response = await axiosInstance.get('/getUserProfile');
+        const response = await axiosInstance.get('/getUserProfile', { withCredentials: true });
         if (response.status === 200) {
           setUserProfile(response.data);
           setIsAuthenticated(true);  // Set authenticated state to true
