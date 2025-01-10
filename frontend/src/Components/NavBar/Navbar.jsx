@@ -3,9 +3,10 @@ import "./Navbar.css"
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import ViewProfile from '../ViewProfile/ViewProfile'
-import { UserProfileContext } from '../../helper/UserProfileContext';
+
 import {axiosInstance, getImageUrl} from '../../helper/axiosConfig';
 import { UserContext } from '../../helper/UserContext';
+import { UserProfileContext } from '../../helper/UserProfileContext';
 
 function Navbar() {
 
