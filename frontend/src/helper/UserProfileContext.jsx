@@ -21,7 +21,7 @@ export const UserProfileProvider = ({ children }) => {
     const fetchData = async () => {
      
       try {
-        const response = await axiosInstance.get('/getUserProfile');
+        const response = await axiosInstance.get('/getUserProfile', { withCredentials: true });
         setUserProfile(response.data);
         console.log(response.data)
         setError(null);
