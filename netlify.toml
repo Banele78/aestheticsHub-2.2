@@ -1,6 +1,6 @@
 [build]
   base = "frontend"  # Directory where Netlify runs the build command
-  publish = "frontend/build"  # Output folder for the built app
+  publish = "frontend/build"  # Correct output directory after build
   command = "CI= npm run build"  # Build command to generate the app
 
 [functions]
