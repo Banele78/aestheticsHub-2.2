@@ -36,7 +36,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String auString = loginService.getToken();
        
     
-        if (auString == null) {
+        if (authToken == null) {
             System.out.println("No auth token found in cookies.");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Unauthorized: Please log in.");
@@ -54,7 +54,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
     
         // Extract the user ID from the valid token
-        String userId = jwtService.extractUsername(auString);
+        String userId = jwtService.extractUsername(authToken);
         if (userId == null) {
             System.out.println("Token does not contain valid user ID.");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
