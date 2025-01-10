@@ -33,9 +33,10 @@ public class AuthInterceptor implements HandlerInterceptor {
     
         // Extract auth token from cookies
         String authToken = extractAuthTokenFromCookies(request);
+        String auString = loginService.getToken();
        
     
-        if (authToken == null) {
+        if (auString == null) {
             System.out.println("No auth token found in cookies.");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Unauthorized: Please log in.");
@@ -53,7 +54,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
     
         // Extract the user ID from the valid token
-        String userId = jwtService.extractUsername(authToken);
+        String userId = jwtService.extractUsername(auString);
         if (userId == null) {
             System.out.println("Token does not contain valid user ID.");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -65,7 +66,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         // Set user ID for later use in the handler
         this.userid = userId;
         System.out.println("Auth token is valid. Access granted for user ID: " + userId);
-
+             
         // Create an authentication token and set it in the SecurityContext
         // Here we assume the user has ROLE_USER authority, you can add more roles/authorities if needed
         UsernamePasswordAuthenticationToken authentication = 
