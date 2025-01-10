@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import "./comments.css";
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import CommentIcon from '@mui/icons-material/Comment';
 import SendIcon from '@mui/icons-material/Send';
 import {axiosInstance} from '../../helper/axiosConfig';
+import { UserProfileContext } from '../../helper/UserProfileContext';
 
 
 function Comments({ open, setOpen }) {
@@ -17,12 +18,14 @@ function Comments({ open, setOpen }) {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
 
+    const { userProfile } = useContext(UserProfileContext);
+
     const initialValues = { comment: "", post_id: open };
 
     const handleAddComment = async (values, { resetForm }) => {
         setSubmitting(true);
         try {
-            await axiosInstance.post('/comment', values, {
+            await axiosInstance.post(`/${userProfile.id}/comment`, values, {
                 headers: { 'Content-Type': 'application/json' },
             });
     
@@ -59,7 +62,7 @@ function Comments({ open, setOpen }) {
             <div className="box">
             <div className="backB">
                         <img
-                            src="./Vector.png"
+                            src="/Vector.png"
                             alt="Back"
                             onClick={() => setOpen((prev) => !prev)}
                         />
@@ -75,7 +78,7 @@ function Comments({ open, setOpen }) {
                         comments.map((comment) => (
                             <div key={comment.id} className="comment">
                                 <p className="username">
-                                    {comment.user?.userProfile?.nickName || "Anonymous"}
+                                    {comment.userProfile?.nickName || "Anonymous"}
                                 </p>
                                 <div className="input">
                                     <p>{comment.comment || "No comment available"}</p>

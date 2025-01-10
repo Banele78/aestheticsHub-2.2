@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.aestheticsHub.Backend.auth.AuthInterceptor;
 import com.aestheticsHub.Backend.model.Post;
 import com.aestheticsHub.Backend.model.User;
+import com.aestheticsHub.Backend.model.UserProfile;
 import com.aestheticsHub.Backend.repository.PostRepository;
 
 @Service
@@ -21,6 +22,9 @@ public class PostService {
     private UserService userService;
 
     @Autowired
+    private UserProfileService userProfileService;
+
+    @Autowired
     private AuthInterceptor authInterceptor;
 
     public List<Post> getposts(){
@@ -29,19 +33,21 @@ public class PostService {
     }
 
     //post a post
-    public Post post(String Artname, String artistType, String artPic, String contentType, byte[] Picbytes){
-        Long userId = authInterceptor.getId();
-        User user = userService.getUserById(userId);
+    public Post post(Long userProfile_id,String Artname,String Caption, String artistType, String artPic, String contentType, byte[] Picbytes){
+      
+
+        UserProfile userProfile = userProfileService.getUserProfileById(userProfile_id);
 
         Post post = new Post();
 
         post.setArtname(Artname);
+        post.setCaption(Caption);
         post.setArtistType(artistType);
         post.setArtPic(artPic);
         post.setContentType(contentType);
         post.setPicbytes(Picbytes);
        
-        post.setUser(user);
+        post.setUserProfile(userProfile);
         
         return postRepository.save(post);
     }

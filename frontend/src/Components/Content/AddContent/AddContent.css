@@ -1,13 +1,71 @@
+.addContent {
+  height: 100%;
+  margin: 0;
+  display: grid;
+  place-items: center;  /* Centers both horizontally and vertically */
+}
+h3{
+  color: #fff;
+}
 .Setcontent {
-    background-color: pink;
-    width: var(--content-size);
-    height: var(--content-size);
-    border-radius: 20px;
-    transition: background-color 0.3s, border-radius 0.3s;
-    margin-top: 20px;
-    position: relative;  /* Ensure it can be a container for the cropper */
+  background-color: #fff;
+  width: var(--content-size);
+  height: var(--content-size);
+  background-image: url("./add 1.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 120px; /* Or cover depending on your design preference */
+  border-radius: 20px;
+  transition: background-color 0.3s, border-radius 0.3s;
+  
+  position: relative;
+  left: 20%;
+  /* Ensure it can be a container for the cropper */
+  cursor: pointer;
+ 
+}
+
+.addContent .field{
+  
+  color:white;
+  display: flex;
+  flex-direction: column;
+} 
+.addContent .field  input {
+    width: clamp(450px, 50vw, 550px);
+    height: clamp(50px, 10vw, 50px);
+    border-radius: 16px;
+    border: 1px solid #3CA0F2;
+    background-color: #2C2626;
+   color:white;
+   font-size: 17px;
+   padding-left: 10px;
   }
 
+  .addContent  .error{
+    font-size: 18px;
+    margin-left: 15px;
+    margin-top: 0;
+   
+  }
+
+  
+
+  .field  select {
+    width: clamp(450px, 50vw, 550px);
+    height: clamp(50px, 10vw, 50px);
+    border-radius: 16px;
+    border: 1px solid #3CA0F2;
+    background-color: #2C2626;
+   color:white;
+   font-size: 17px;
+   padding-left: 10px;
+  }
+
+  .addContent .button-container {
+    position: relative;
+  left: 34%;
+  }
   
   .Setcontent  img {
     width: 100%;
@@ -58,6 +116,49 @@
     color: white;
     border: 1px solid yellow;
     font-size: 20px;
+    
+  }
+
+
+  @media (max-width: 480px) { 
+    
+  
+    .Setcontent {
+    
+      
+      position: relative;
+      left: 35px;
+      
+     
+    }
+  
+  
+  
+    .addContent .field input {
+      width: clamp(350px, 50vw, 950px);
+     
+    }
+
+    .addContent .field select {
+      width: clamp(350px, 50vw, 950px);
+     
+    }
+  
+    .bd.sign .name input{
+      width: clamp(150px, 22.5vw, 350px);
+      height: clamp(60px, 10vw, 67px);          
+      }
+      .addContent .button-container {
+        position: relative;
+      left: 0;
+      }
+
+      .controls button {
+        margin-left: 0;
+        
+        width: 110px;
+      }
+     
   }
   
 

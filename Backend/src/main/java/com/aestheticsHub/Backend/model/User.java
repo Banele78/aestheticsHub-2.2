@@ -48,18 +48,6 @@ public class User {
      @JsonIgnoreProperties("user")
     private UserProfile userProfile;
 
-   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-   @JsonIgnoreProperties("user")
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("user")
-    private List<Comments> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("user")
-    private List<Likes> likes = new ArrayList<>();
-
 
     public User() {
     }
@@ -106,38 +94,9 @@ public class User {
     }
 
     
-    public List<Post> getPosts() {
-        return posts;
-    }
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-        for (Post post : posts) {
-            post.setUser(this);
-        }
-    }
    
-    public List<Comments> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comments> comments) {
-        this.comments = comments;
-        for (Comments comment : comments) {
-            comment.setUser(this);
-        }
-    }
-
-
-    public List<Likes> getLikes() {
-        return likes;
-    }
-    public void setLikes(List<Likes> likes) {
-        this.likes = likes;
-        for (Likes like : likes) {
-            like.setUser(this);
-        }
-    }
-
+   
+   
     
 
     

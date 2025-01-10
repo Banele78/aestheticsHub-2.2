@@ -13,7 +13,7 @@ function ViewProfile({open, setOpen}) {
     <div className="viewP">
     <div className="profile">
        <div className="image">
-      <img src="./back.png" alt="back" onClick={() => setOpen(prev => !prev)}/>
+      <img src="/back.png" alt="back" onClick={() => setOpen(prev => !prev)}/>
       </div>
      <div className="scroll-content">
      
@@ -21,15 +21,15 @@ function ViewProfile({open, setOpen}) {
       <div  className="account">
         <h1>Your account</h1>
         <div className="profilePic">
-        <Link to="/editProfile"> <img src={`${getImageUrl}/userProfile/${userProfile.id}/ProfileImage`} alt="profile"/> </Link>
+        <Link to={`/viewProfile/${userProfile.id}`} onClick={() => setOpen(prev => !prev)}>  <img src={`${getImageUrl}/userProfile/${userProfile.id}/ProfileImage`} alt="profile"/> </Link>
         </div>
       
         <h1>{userProfile.nickName} </h1>
         <h2>{userProfile.artistType} </h2>
         <div className="Stars">
-        <img src="./Star.png" alt="profile"/>
-        <img src="./Star.png" alt="profile"/>
-        <img src="./Star.png" alt="profile"/>
+        <img src="/Star.png" alt="profile"/>
+        <img src="/Star.png" alt="profile"/>
+        <img src="/Star.png" alt="profile"/>
         </div>
         </div>
  

@@ -4,49 +4,42 @@ import {axiosInstance }from './axiosConfig'
 import { useNavigate } from 'react-router-dom';
 
 // Create Context
-export const UserProfileContext = createContext();
+export const UserContext = createContext();
 
 // Create Provider Component
-export const UserProfileProvider = ({ children }) => {
-  const [userProfile, setUserProfile] = useState([]);
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [postsUpdate, setPostsUpdate] = useState(false);
-
-  
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-     
       try {
-        const response = await axiosInstance.get('/getUserProfile');
-        setUserProfile(response.data);
+        const response = await axiosInstance.get("/auth");
+        setUser(response.data);
         console.log(response.data)
         setError(null);
         if(response.status=200){
-          //setIsAuthenticated(true);
+          setIsAuthenticated(true);
         }
         
       } catch (err) {
         setError('Failed to fetch user profile data');
-        
-        //setIsAuthenticated(false);
-        navigate("/editProfile");
+        setIsAuthenticated(false)
+       
       } finally {
         setLoading(false);
       }
     };
-
-   //if(isAuthenticated)
       fetchData();
     
-  }, [isAuthenticated, postsUpdate]);
+  }, []);
 
   return (
-    <UserProfileContext.Provider value={{ userProfile, loading,setLoading, error, isAuthenticated, setIsAuthenticated, postsUpdate, setPostsUpdate}}>
+    <UserContext.Provider value={{ user, loading, error, isAuthenticated ,setIsAuthenticated}}>
       {children}
-    </UserProfileContext.Provider>
+    </UserContext.Provider>
   );
 };

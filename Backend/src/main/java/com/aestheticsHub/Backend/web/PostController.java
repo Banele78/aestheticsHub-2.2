@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +26,10 @@ import com.aestheticsHub.Backend.auth.AuthInterceptor;
 import com.aestheticsHub.Backend.model.Likes;
 import com.aestheticsHub.Backend.model.Post;
 import com.aestheticsHub.Backend.model.User;
+import com.aestheticsHub.Backend.model.UserProfile;
 import com.aestheticsHub.Backend.service.LikesService;
 import com.aestheticsHub.Backend.service.PostService;
+import com.aestheticsHub.Backend.service.UserProfileService;
 import com.aestheticsHub.Backend.service.UserService;
 
 @RestController
@@ -45,18 +47,23 @@ public class PostController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserProfileService userProfileService;
+
 //create post
-    @PostMapping("/api/post")
+    @PostMapping("/api/{userProfile_id}/post")
     public ResponseEntity<String> createPost(@RequestPart("Artname") String Artname,
+    @RequestPart(value = "Caption", required = false) String Caption,
     @RequestPart("artistType") String artistType,
     @RequestPart("artPic") MultipartFile artPic,
+    @PathVariable Long userProfile_id, 
     BindingResult result
     ) throws IOException{
 
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body("Invalid user data");
         }
-        postService.post(Artname, artistType, artPic.getOriginalFilename(), artPic.getContentType(), artPic.getBytes());
+        postService.post(userProfile_id,Artname,Caption, artistType, artPic.getOriginalFilename(), artPic.getContentType(), artPic.getBytes());
          return ResponseEntity.ok("post created");
     }
 
@@ -64,17 +71,21 @@ public class PostController {
 
     //get posts by artistType
 @GetMapping("/api/{artistType}/posts")
-public ResponseEntity<List<PostDTO>> getPostsByArtistType(@PathVariable String artistType) {
+public ResponseEntity<List<PostDTO>> getPostsByArtistType(@PathVariable String artistType
+) {
     // Get the ID of the authenticated user
-    Long userId = authInterceptor.getId();
+     //get the user profile of the person who is logged in
+     Long userId = authInterceptor.getId();
+        User user= userService.getUserById(userId);
+         UserProfile userProfile= userProfileService.getUserProfile(user);
 
     if (userId == null) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.emptyList());
     }
 
-    // Retrieve the user by ID
-    User user = userService.getUserById(userId);
-    if (user == null) {
+ 
+   // UserProfile userProfile = userProfileService.getUserProfileById(userProfile_id);
+    if (userProfile == null) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
     }
 
@@ -86,7 +97,7 @@ public ResponseEntity<List<PostDTO>> getPostsByArtistType(@PathVariable String a
    
 
     // Retrieve all likes for the user in a single query
-    List<Likes> userLikes = likesService.getLikeByUser(user);
+    List<Likes> userLikes = likesService.getLikeByUserProile(userProfile);
     Map<Long, Likes> likesMap = userLikes.stream()
                                           .collect(Collectors.toMap(like -> like.getPost().getId(), like -> like));
 

@@ -30,9 +30,9 @@ public class Comments {
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "userProfile_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("posts")
-    private User user;
+    private UserProfile userProfile;
 
     public Comments(){}
 
@@ -60,12 +60,12 @@ public class Comments {
         this.post = post;
     }
 
-    public User getUser() {
-        return user;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     

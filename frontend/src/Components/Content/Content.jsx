@@ -1,53 +1,100 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./content.css"
 import Navbar from '../NavBar/Navbar'
-import Comments from '../comments/Comments';
-import axios from 'axios';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MapsUgcIcon from '@mui/icons-material/MapsUgc';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import CommentIcon from '@mui/icons-material/Comment';
 import {axiosInstance, getImageUrl} from '../../helper/axiosConfig';
+import { UserProfileContext } from '../../helper/UserProfileContext';
+import { Link, useNavigate } from 'react-router-dom';
+import UserProfiles from './UserProfiles';
+import Posts from './Posts';
+const SkeletonLoader = () => (
+  <div className="skeleton-wrapper">
+    <div className="skeleton-card">
+      <div className="skeleton-image"></div>
+    </div>
+    <div className="skeleton-bottom">
+      <div className="skeleton-text"></div>
+      <div className="skeleton-icons">
+        <div className="skeleton-icon"></div>
+        <div className="skeleton-icon"></div>
+      </div>
+    </div>
+  </div>
+);
 
 function Content() {
-  const [open, setOpen] = useState(null);
-  const [likedPosts, setLikedPosts] = useState([]);
-  const [content, setContent] = useState([]);
-  const [contentByLikes, setContentByLikes] = useState([]);
+  const [Profiles, setProfiles] = useState([]);
+ const [contentByLikes, setContentByLikes] = useState([]);
   const [contentByDate, setContentByDate] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingContent, setLoadingContent] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all'); // Added state to track the selected category
-  const [limit, setLimit] = useState(30); // Limit for displayed content
+  const [limit, setLimit] = useState(8); // Limit for displayed content
+  const [limitProfile, setLimitProfile] = useState(6);
+  const [limitDate, setLimitDate] = useState(8);
+  const navigate = useNavigate();
+   const { userProfile,loading, setLoading} = useContext(UserProfileContext);
+
+  // Throttle function to limit how often the scroll handler is triggered
+  const throttle = (func, delay) => {
+    let lastCall = 0;
+    return (...args) => {
+      const now = new Date().getTime();
+      if (now - lastCall >= delay) {
+        func(...args);
+        lastCall = now;
+      }
+    };
+  };
+
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      const scrollableHeight = document.documentElement.scrollHeight;
+      const scrolled = window.innerHeight + window.scrollY;
+
+      // Only trigger if scrolled to the bottom and not already loading
+      if (scrolled >= scrollableHeight - 50 && !loadingContent) {
+        setLoadingContent(true);
+        handleLoadMore();
+      }
+    }, 200);  // Throttle the scroll event handler to run at most once every 500ms
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('touchmove', handleScroll);  // Ensure touch events trigger it
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
+    };
+  }, [loadingContent]); // Depend on loadingContent state
+
+  const handleLoadMore = () => {
+    setTimeout(() => {
+      setLimitDate((prevLimit) => prevLimit + 8);
+      setLoadingContent(false);
+    }, 1000);  // Simulate a delay (replace with API fetch)
+  };
 
   const categories = [
     { value: "all", label: "All" },
-    { value: "singer-rappers", label: "Singer/Rappers" },
-    { value: "fashion", label: "Fashion" },
     { value: "painter", label: "Drawing/Paintings" },
-    { value: "books-writing", label: "Books/Writing" },
-    { value: "photographers", label: "Photographers" },
+    { value: "musician", label: "Musicians" },
+    { value: "Fashion", label: "Fashion" },
+    { value: "author", label: "Books/Writing" },
+    { value: "Photographer", label: "Photographers" },
   ];
-
-  
-
   const FALLBACK_IMAGE = './fallback.png';
 
   useEffect(() => {
-    // Lock scroll when a comment section is open
-    document.body.style.overflow = open ? 'hidden' : 'auto';
-    return () => {
-      document.body.style.overflow = 'auto'; // Reset scroll on unmount
-    };
-  }, [open]);
-
-  useEffect(() => {
     // Fetch posts based on selected category
-    setLoading(true); // Ensure loading is true before the request
+    setLoadingContent(true); // Ensure loading is true before the request
     const fetchPosts = async () => {
+   
       try {
-       
+      
         const response = await axiosInstance.get(`/${selectedCategory}/posts`);
+
+        const userProfiles = await axiosInstance.get(`/${selectedCategory}/getAllProfiles`);
+        setProfiles(userProfiles.data);
+        console.log(response.data);
 
        // Sort by number of likes
     const ByLikes = [...response.data].sort((a, b) => b.likes.length - a.likes.length);
@@ -60,50 +107,28 @@ function Content() {
        
       } catch (error) {
         console.error('Error fetching posts:', error);
+      
       } finally {
-        setLoading(false);
+       setLoadingContent(false);
+       
       }
     };
     
-    fetchPosts();
-  }, [selectedCategory]); // Fetch posts when the selected category changes
-
-  const Like = async (postId) => {
-    try {
-      // Make the POST request to like/unlike the post
-      await axiosInstance.post('/like', { postId });
-  
-      // Update the `content` state optimistically by toggling the like state
-      setContentByLikes((prevContent) => 
-        prevContent.map((post) =>
-          post.id === postId
-            ? { ...post, likedByUser: !post.likedByUser } // Toggle the like status of the post
-            : post
-        )
-      );
-      setContentByDate((prevContent) => 
-        prevContent.map((post) =>
-          post.id === postId
-            ? { ...post, likedByUser: !post.likedByUser } // Toggle the like status of the post
-            : post
-        )
-      );
-    } catch (error) {
-      console.error('Error liking post:', error);
+    if (!loading) {
+      //setLoading(true);
+      fetchPosts();
     }
-  };
-  
+  }, [selectedCategory, userProfile]); // Fetch posts when the selected category changes
 
   if (loading) {
-    return <p>Loading...</p>; // Display loading message while fetching
+    return <div className="spinner-wrapper">
+    <div className="spinner"></div>
+  </div>; // Display loading message while fetching
   }
   return (
-    <div>
-      <Navbar/>
+    <div className='contentP'>
      
-    
-    
-
+     
 <div className="category">
   <select className="styled-dropdown"
    value={selectedCategory}
@@ -117,54 +142,17 @@ function Content() {
 </div>
 
       <div className="view">Most Popular</div>
+     <Posts content={contentByLikes} setContent={setContentByLikes} limit={limit} setLimit={setLimit} userProfile={userProfile} />
 
-      <div className="container">
-        {contentByLikes.length > 0 ? (
-          contentByLikes.slice(0, limit).map((post) => (
-            <div key={post.id} className="content">
-              <div className="image">
-                <img
-                  src={`${getImageUrl}/posts/${post.id}/image`}
-                  alt={post.artname || 'Post Image'}
-                  onError={(e) => (e.target.src = FALLBACK_IMAGE)}
-                />
-              </div>
-              <div className='contentInfo'>
-                <div className='info'>
-                <p>{post.artistType}</p>
-                <p className='date'>
-  {new Date(post.createdDate).toLocaleDateString('en-ZA', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })}
-</p>
-                </div>
-           
-              <div className="icon">
-                  {post.likedByUser ? ( 
-                    <FavoriteIcon className='IconColor' onClick={() => Like(post.id)}/>
-                     
-                  ) : ( 
-                    <FavoriteBorderOutlinedIcon className='IconColor' onClick={() => Like(post.id)}/>
-                  )}
-               
+     <UserProfiles Profiles={Profiles} limitProfile={limitProfile} setLimitProfile={setLimitProfile} />
+     
+        <div className="view recentView">Recently added</div>
+        <Posts content={contentByDate} setContent={setContentByDate} limit={limitDate} setLimit={setLimitDate} userProfile={userProfile}/>
+     
+     {loadingContent && <div className="container">
+     { [...Array(4)].map((_, index) => <SkeletonLoader key={index} />)}
 
-                <CommentIcon className='IconColor'
-                  onClick={() => setOpen(open === post.id ? null : post.id)}
-                />
-               
-              </div>
-              </div>
-             
-              {open === post.id && <Comments open={open} setOpen={setOpen} />}
-            </div>
-          ))
-        ) : (
-          <p>No posts available.</p>
-        )}
-      
-      </div>
+     </div>}
      
     </div>
   )

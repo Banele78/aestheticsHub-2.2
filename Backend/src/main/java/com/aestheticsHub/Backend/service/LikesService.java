@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.aestheticsHub.Backend.model.Likes;
 import com.aestheticsHub.Backend.model.Post;
 import com.aestheticsHub.Backend.model.User;
+import com.aestheticsHub.Backend.model.UserProfile;
 import com.aestheticsHub.Backend.repository.LikesRepository;
 
 @Service
@@ -20,16 +21,16 @@ public class LikesService {
         return likesRepository.save(like);
     }
 
-    public Likes getLikeByUserAndPost(User user, Post post) {
-        return likesRepository.findByUserAndPost(user, post);
+    public Likes getLikeByUserProfileAndPost(UserProfile userProfile, Post post) {
+        return likesRepository.findByUserProfileAndPost(userProfile, post);
     }
 
     public void deleteLike(Likes like) {
         likesRepository.delete(like);
     }
 
-    public List <Likes> getLikeByUser(User user){
-        return likesRepository.findByUser(user);
+    public List <Likes> getLikeByUserProile(UserProfile userProfile){
+        return likesRepository.findByUserProfile(userProfile);
     }
 
 

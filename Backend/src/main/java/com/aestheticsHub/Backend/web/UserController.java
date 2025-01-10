@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aestheticsHub.Backend.DTO.UserLoginDTO;
+import com.aestheticsHub.Backend.auth.AuthInterceptor;
 import com.aestheticsHub.Backend.auth.JwtService;
 import com.aestheticsHub.Backend.model.User;
+import com.aestheticsHub.Backend.model.UserProfile;
 import com.aestheticsHub.Backend.service.UserService;
 import com.aestheticsHub.Backend.utility.PasswordUtil;
 import jakarta.servlet.http.Cookie;
@@ -35,6 +37,9 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
+     @Autowired
+    private AuthInterceptor authInterceptor;
+
     @GetMapping
     public List<User> getAllUsers(){
         return userService.getAllUsers();
@@ -44,6 +49,14 @@ public class UserController {
     // public User getUserById(@PathVariable Long id){
     //     return userService.getUserById(id);
     // }
+
+    @GetMapping("/api/getUser")    
+    public ResponseEntity<User> getUserprofile(){
+       Long userId = authInterceptor.getId();
+        User user= userService.getUserById(userId);
+         
+        return ResponseEntity.ok(user);
+    }
 
     // @GetMapping("/{email}")
     // public User getUserByEmail(@PathVariable String  email){
@@ -67,11 +80,11 @@ public class UserController {
         loginDTO.setToken(token);
       // Create the cookie
     Cookie cookie = new Cookie("authToken", token);
-    cookie.setHttpOnly(true);
+    cookie.setHttpOnly(false);
     cookie.setSecure(false); // 'true' for HTTPS in production
     cookie.setPath("/");
-    cookie.setMaxAge(10 * 24 * 60 * 60); // 1 week expiry
-    cookie.setDomain("localhost"); // Use the appropriate domain in production
+    cookie.setMaxAge(17 * 24 * 60 * 60); // 1 week expiry
+    cookie.setDomain("192.168.0.238"); // Use the appropriate domain in production
     cookie.getValue();
 
     
@@ -94,7 +107,7 @@ public class UserController {
 // Overwrite the Set-Cookie header
 response.setHeader("Set-Cookie", sameSiteCookie);
 
-        return ResponseEntity.ok("Login successful" );
+        return ResponseEntity.ok("Login successful " );
     }
     
 //Register user
@@ -120,7 +133,7 @@ response.setHeader("Set-Cookie", sameSiteCookie);
         userService.deleteUser(id);
     }
 
-    @GetMapping("/api")
+    @GetMapping("/api/auth")
 public ResponseEntity<String> getProtectedData() {
 
    // authInterceptor.preHandle(request, response, authInterceptor);

@@ -15,8 +15,10 @@ import com.aestheticsHub.Backend.auth.AuthInterceptor;
 import com.aestheticsHub.Backend.model.Comments;
 import com.aestheticsHub.Backend.model.Post;
 import com.aestheticsHub.Backend.model.User;
+import com.aestheticsHub.Backend.model.UserProfile;
 import com.aestheticsHub.Backend.service.CommentsService;
 import com.aestheticsHub.Backend.service.PostService;
+import com.aestheticsHub.Backend.service.UserProfileService;
 import com.aestheticsHub.Backend.service.UserService;
 
 @RestController
@@ -35,16 +37,19 @@ public class CommentsController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/api/comment")
-    public ResponseEntity<CommentDTO> pComments(@RequestBody CommentDTO commentDTO){
+    @Autowired
+    private UserProfileService userProfileService;
+
+    @PostMapping("/api/{userProfile_id}/comment")
+    public ResponseEntity<CommentDTO> pComments(@RequestBody CommentDTO commentDTO, @PathVariable Long userProfile_id){
         Long userId = authInterceptor.getId();
         User user = userService.getUserById(userId);
         Post post = postService.getPostById(commentDTO.getPost_id());
-        
+         UserProfile userProfile = userProfileService.getUserProfileById(userProfile_id);
         Comments comments = new Comments();
         comments.setComment(commentDTO.getComment());
         comments.setPost(post);
-        comments.setUser(user);
+        comments.setUserProfile(userProfile);
 
         commentsService.pComments(comments);
         return ResponseEntity.ok(commentDTO);

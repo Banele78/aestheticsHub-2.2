@@ -1,0 +1,46 @@
+.Setprofile {
+    background-color: #fff;
+    width: var(--content-size);
+    height: var(--content-size);
+    background-image: url("./add 1.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 120px; /* Or cover depending on your design preference */
+    border-radius: 50%;
+    transition: background-color 0.3s, border-radius 0.3s;
+   
+    position: relative;
+    left: 20%;
+    /* Ensure it can be a container for the cropper */
+    cursor: pointer;
+   
+  }
+
+  .Setprofile  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  @media (max-width: 480px) { 
+    
+  
+    .Setprofile {
+      background-color: #fff;
+      width: var(--content-size);
+      height: var(--content-size);
+      background-image: url("./add 1.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 120px; /* Or cover depending on your design preference */
+      border-radius: 50%;
+      transition: background-color 0.3s, border-radius 0.3s;
+     
+      position: relative;
+      left:35px;
+      /* Ensure it can be a container for the cropper */
+      cursor: pointer;
+     
+    }
+     
+  }

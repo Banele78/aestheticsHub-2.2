@@ -5,14 +5,16 @@ import axios from 'axios';
 import ViewProfile from '../ViewProfile/ViewProfile'
 import { UserProfileContext } from '../../helper/UserProfileContext';
 import {axiosInstance, getImageUrl} from '../../helper/axiosConfig';
+import { UserContext } from '../../helper/UserContext';
 
 function Navbar() {
 
   const [login, setLogin] = useState(false);
   const [open, setOpen] = useState(false);
  
+  const { userProfile, loading, error, isAuthenticated } = useContext(UserProfileContext);
 
-  const { userProfile, loading, error,isAuthenticated } = useContext(UserProfileContext);
+  
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : 'auto';
@@ -23,23 +25,23 @@ function Navbar() {
 
   
   return (
-    <div>
+    <div className='str'>
       
      <div className="navbar">
-     <img src="./Group 6.png" className='logo mobile'/>  
+   <Link to="/">  <img src="/Group 6.png" className='logo mobile'/>  </Link>
      <div className="search">
      <input type="text" placeholder="e.g wedding dress"/>
      </div>
      <div className="icons mobile">
-     <img src="./Group 23.png"/>
-    <Link to="/AddContent"> <img src="./PlusCircle.png" /></Link>
+     <img src="/Group 23.png"/>
+    <Link to="/addContent"> <img src="/PlusCircle.png" /></Link>
      {isAuthenticated ?  
               <img src={`${getImageUrl}/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
               onClick={() => setOpen(prev => !prev)}
               className="user"/>
             
        :
-     <Link to="/login"> <img src="./user.png" className='user'/></Link> 
+     <Link to="/login"> <img src="/user.png" className='user'/></Link> 
      }
      </div>
 
@@ -48,16 +50,16 @@ function Navbar() {
      <div className="bottom-bar">
    
   
-    <img src="./Group 6.png" className="logo" />
-      <img src="./Group 23.png" />
-      <Link to="/addContent"><img src="./PlusCircle.png" /></Link>
+   <Link to="/"><img src="/Group 6.png" className="logo" /></Link> 
+      <img src="/Group 23.png" />
+      <Link to="/addContent"><img src="/PlusCircle.png" /></Link>
       {isAuthenticated ? (
         <img src={`${getImageUrl}/userProfile/${userProfile.id}/ProfileImage`} alt="profile" 
         onClick={() => setOpen(prev => !prev)}
         className="user"/>
       ) : (
         <Link to="/login">
-          <img src="./user.png" className="user" />
+          <img src="/user.png" className="user" />
         </Link>
       )}
    

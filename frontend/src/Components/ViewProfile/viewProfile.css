@@ -4,6 +4,7 @@
     position: fixed;
     top:0;
     left: 0;   
+    z-index: 1200;
 }
 
 p{
@@ -12,6 +13,7 @@ p{
 
 .profile {
   background-color: #ffff;
+ 
   width: 350px;
   max-height: calc(100vh - 80px); /* Keeps the container within the viewport */
   position: fixed;  
@@ -30,8 +32,8 @@ p{
 }
 
 .profile .profilePic {
-  width: 50px; /* Set width and height to be equal */
-  height: 50px; 
+  width: 90px; /* Set width and height to be equal */
+  height: 90px; 
   display: flex; /* Centering with flexbox */
   justify-content: center;
   align-items: center;

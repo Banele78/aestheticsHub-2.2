@@ -1,12 +1,18 @@
 package com.aestheticsHub.Backend.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -42,6 +48,18 @@ public class UserProfile {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     @JsonIgnore    
     private User user;
+
+     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+   @JsonIgnoreProperties("userProfile")
+    private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("userProfile")
+    private List<Comments> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("userProfile")
+    private List<Likes> likes = new ArrayList<>();
 
     public byte[] getPicbytes() {
         return Picbytes;
@@ -112,6 +130,39 @@ public class UserProfile {
     public void setArtistType(String artistType) {
         this.artistType = artistType;
     }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+        for (Post post : posts) {
+            post.setUserProfile(this);
+        }
+    }
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+        for (Comments comment : comments) {
+            comment.setUserProfile(this);
+        }
+    }
+
+
+    public List<Likes> getLikes() {
+        return likes;
+    }
+    public void setLikes(List<Likes> likes) {
+        this.likes = likes;
+        for (Likes like : likes) {
+            like.setUserProfile(this);
+        }
+    }
+
 
     
 

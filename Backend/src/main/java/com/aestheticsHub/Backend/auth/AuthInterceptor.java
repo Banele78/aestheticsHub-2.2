@@ -36,13 +36,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 // Log cookies
 //Cookie[] cookies = request.getCookies();
         // Extract auth token from cookies
-        //String authToken = extractAuthTokenFromCookies(request);
+        String authToken = extractAuthTokenFromCookies(request);
         String auToken =loginService.getToken();
         String id = jwtService.extractUsername(auToken);
 
         setId(Long.valueOf(id));
         if (auToken == null) {
-            System.out.println("No auth token found in cookies." + auToken);
+            System.out.println("No auth token found in cookies." + authToken);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("Unauthorized: Please log in.");
         response.getWriter().flush();
@@ -56,7 +56,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         //   return false;
         //  }
 
-        System.out.println("Auth token is valid. Access granted." + id);
+        System.out.println("Auth token is valid. Access granted." + authToken);
         return true;
     }
 

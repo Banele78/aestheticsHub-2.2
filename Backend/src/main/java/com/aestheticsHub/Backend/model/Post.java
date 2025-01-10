@@ -22,6 +22,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -34,6 +35,9 @@ public class Post {
 
     @NotBlank(message ="artname is required")
     private String Artname;
+
+  
+    private String Caption;
 
     @NotBlank(message ="artistType is required")
     private String artistType;
@@ -57,10 +61,9 @@ public class Post {
     private LocalTime createdTime;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "userProfile_id", referencedColumnName = "id", nullable = false)
     @JsonIgnoreProperties("posts")//to not cause a inifinite loop
-    @JsonIgnore
-    private User user;
+    private UserProfile userProfile;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -88,6 +91,8 @@ public class Post {
         Artname = artname;
     }
 
+    
+
     public String getArtistType() {
         return artistType;
     }
@@ -104,12 +109,12 @@ public class Post {
         this.artPic = artPic;
     }
 
-    public User getUser() {
-        return user;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 
     public byte[] getPicbytes() {
@@ -167,6 +172,14 @@ public class Post {
         }
 
         
+    }
+
+    public String getCaption() {
+        return Caption;
+    }
+
+    public void setCaption(String caption) {
+        this.Caption = caption;
     }
 
     

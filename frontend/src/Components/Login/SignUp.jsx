@@ -112,7 +112,7 @@ const onSubmit = async (data, { resetForm }) => {
 
             <div className="field">
             <ErrorMessage name="cPassword" component="span"  className='error'/>
-            <Field type="text" name="cPassword" placeholder='Conform Password'/>
+            <Field type="password" name="cPassword" placeholder='Conform Password'/>
             </div>
 
             <div className="checkbox-container">

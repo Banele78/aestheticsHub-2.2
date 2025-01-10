@@ -8,13 +8,14 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { UserProfileContext } from '../../helper/UserProfileContext';
 import {axiosInstance} from '../../helper/axiosConfig';
+import { UserContext } from '../../helper/UserContext';
 
 function Login() {
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
 
-  const {setIsAuthenticated } = useContext(UserProfileContext);
+  const {setIsAuthenticated } = useContext(UserContext);
 
   const handleNavigation = () => {
     navigate('/signup'); 
@@ -46,7 +47,7 @@ function Login() {
       setEmailError('');
       setPasswordError(' ');
       if(response.status ==200){
-        setIsAuthenticated(true);
+       // setIsAuthenticated(true);
       }
      console.log(response.data);
     
@@ -56,7 +57,7 @@ function Login() {
       //setErrorMessage(error.response.data);
       if(error.response.status == 404)
       setEmailError(error.response.data);
-      setIsAuthenticated(false);
+      //setIsAuthenticated(false);
 
       if(error.response.status == 401)
         setPasswordError(error.response.data);
@@ -84,7 +85,7 @@ function Login() {
             <div className="field">
             {passwordError && <span className='error'> {passwordError}</span>}
             <ErrorMessage name="password" component="span" className="error"/><br/>
-            <Field type="text" name="password" placeholder='Password'/>
+            <Field type="password" name="password" placeholder='Password'/>
             </div>
 
            

@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import com.aestheticsHub.Backend.model.Likes;
 import com.aestheticsHub.Backend.model.Post;
-import com.aestheticsHub.Backend.model.User;
+import com.aestheticsHub.Backend.model.UserProfile;
+
 
 @Repository
 public interface LikesRepository extends JpaRepository<Likes, Long> {
-   Likes findByUserAndPost(User user, Post post);
+   Likes findByUserProfileAndPost(UserProfile userProfile, Post post);
 
-    List <Likes> findByUser(User user);
+    List <Likes> findByUserProfile(UserProfile userProfile);
 }

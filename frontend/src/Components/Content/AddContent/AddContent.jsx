@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { axiosInstance } from '../../../helper/axiosConfig';
 import Cropper from 'react-easy-crop';
 import './AddContent.css';
 import ImageCropDialog from "../../CropImage/ImageCropDialog";
+import { UserProfileContext } from '../../../helper/UserProfileContext';
+import { Link } from 'react-router-dom';
+
 
 function AddContent() {
   const [errorMessage, setErrorMessage] = useState('');
@@ -13,23 +16,30 @@ function AddContent() {
   
   const [croppedImage, setCroppedImage] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const { userProfile, loading, error } = useContext(UserProfileContext);
   
 
   const artistTypeOptions = [
     { value: '', label: 'Select Artist Type' },
     { value: 'painter', label: 'Painter' },
     { value: 'musician', label: 'Musician' },
-    { value: 'sculptor', label: 'Sculptor' },
+    { value: 'Fashion', label: 'Fashion' },
+    { value: 'author', label: 'Author/Writer' },
+    { value: 'Photographer', label: 'Photographer' },
   ];
 
   const initialValues = {
     Artname: '',
-    artistType: '',
+    Caption: '',
+    artistType: userProfile.artistType,
     artPic: null,
   };
 
   const validationSchema = Yup.object().shape({
     Artname: Yup.string().required('Artname is required'),
+    Caption: Yup.string() .max(330, 'Caption cannot be longer than 300 characters')
+    .optional(),  
     artistType: Yup.string().required('Please select an artist type'),
     artPic: Yup.mixed().required('Art picture is required'),
   });
@@ -69,11 +79,12 @@ function AddContent() {
   const onSubmit = async (data, { resetForm }) => {
     const formData = new FormData();
     formData.append('Artname', data.Artname);
+    formData.append('Caption', data.Caption);
     formData.append('artistType', data.artistType);
     formData.append('artPic', imageFile);  // Send the original file (or cropped image) in the form data
 
     try {
-      const response = await axiosInstance.post('/post', formData, {
+      const response = await axiosInstance.post(`${userProfile.id}/post`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Post updated successfully!');
@@ -87,13 +98,16 @@ function AddContent() {
 
   return (
     <div>
-      AddContent
-      <div className="bd sign">
+      <div className="nav">
+      <Link to="/"> <img src="Group 20.png" className="logo" alt="Logo" /></Link> 
+      </div>
+      <div className="addContent">
+        <h3>Drop your picture here and tell us more!</h3>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
           {({ setFieldValue }) => (
             <Form>
-              <div className="field">
+              <div className="">
                 <label htmlFor="file">
                   <div className="Setcontent">
                     <div className="image">
@@ -121,20 +135,29 @@ function AddContent() {
               </div>
 
               <div className="field">
-                <Field type="text" name="Artname" placeholder="Art name" />
-                <ErrorMessage name="Artname" component="span" className="error" />
+              <ErrorMessage name="Artname" component="span" className="error" />
+                <Field type="text" name="Artname" placeholder="Art Name" />
+               
               </div>
 
               <div className="field">
+              <ErrorMessage name="Caption" component="span" className="error" />
+                <Field type="text" name="Caption" placeholder="Caption" />
+               
+              </div>
+
+              {/* <div className="field">
+              <ErrorMessage name="artistType" component="span" className="error" />
                 <Field as="select" name="artistType">
+               
                   {artistTypeOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
                 </Field>
-                <ErrorMessage name="artistType" component="span" className="error" />
-              </div>
+                
+              </div> */}
 
               <div className="field button-container">
                 <button type="submit">Post</button>
