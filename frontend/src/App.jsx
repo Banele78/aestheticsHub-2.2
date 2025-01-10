@@ -8,7 +8,7 @@ import SignUp from './Components/Login/SignUp';
 import AddContent from './Components/Content/AddContent/AddContent';
 import EditProfile from './Components/ViewProfile/MyContent/Edit profile/Editprofile';
 import { UserProfileContext, UserProfileProvider } from './helper/UserProfileContext';
-import { UserProvider } from './helper/UserContext';
+
 import ProtectedRoute from './ProtectedRoute';
 import MyContent from './Components/ViewProfile/MyContent/Mycontent';
 import ViewProfile from './Components/ViewProfile/ViewProfile';
