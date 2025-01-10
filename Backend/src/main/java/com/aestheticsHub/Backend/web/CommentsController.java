@@ -42,8 +42,8 @@ public class CommentsController {
 
     @PostMapping("/api/{userProfile_id}/comment")
     public ResponseEntity<CommentDTO> pComments(@RequestBody CommentDTO commentDTO, @PathVariable Long userProfile_id){
-        Long userId = authInterceptor.getId();
-        User user = userService.getUserById(userId);
+        String userId = authInterceptor.getId();
+        User user = userService.getUserById(Long.valueOf(userId));
         Post post = postService.getPostById(commentDTO.getPost_id());
          UserProfile userProfile = userProfileService.getUserProfileById(userProfile_id);
         Comments comments = new Comments();

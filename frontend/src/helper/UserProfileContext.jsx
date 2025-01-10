@@ -30,8 +30,8 @@ export const UserProfileProvider = ({ children }) => {
         }
         
       } catch (err) {
-        setError('Failed to fetch user profile data');
-        
+        //setError('Failed to fetch user profile data');
+        console.log(err.response)
         //setIsAuthenticated(false);
         //navigate("/editProfile");
       } finally {

@@ -8,9 +8,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,8 +77,9 @@ public ResponseEntity<List<PostDTO>> getPostsByArtistType(@PathVariable String a
 ) {
     // Get the ID of the authenticated user
      //get the user profile of the person who is logged in
-     Long userId = authInterceptor.getId();
-        User user= userService.getUserById(userId);
+       Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = (String) authentication.getPrincipal();
+        User user= userService.getUserById(Long.valueOf(userId));
          UserProfile userProfile= userProfileService.getUserProfile(user);
 
     if (userId == null) {

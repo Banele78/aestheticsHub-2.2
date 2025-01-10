@@ -35,11 +35,11 @@ public class UserProfileService {
 
 
     public UserProfile SaveProfile(String nickName, String artistType, String bio, String profilePic, String contentType, byte[] picBytes) {
-        Long userId = authInterceptor.getId();
-        User user = userService.getUserById(userId);
+        String userId = authInterceptor.getId();
+        User user = userService.getUserById(Long.valueOf(userId));
         
         // Check if UserProfile already exists
-        UserProfile userProfile = userProfileRepository.findByUserId(userId);
+        UserProfile userProfile = userProfileRepository.findByUserId(Long.valueOf(userId));
         
         if (userProfile != null) {
             // Update existing profile

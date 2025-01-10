@@ -67,8 +67,8 @@ public class UserProfileController {
   
    @GetMapping("/api/getUserProfile")    
     public ResponseEntity<UserProfileDTO> getUserprofile(){
-       Long userId = authInterceptor.getId();
-        User user= userService.getUserById(userId);
+       String userId = authInterceptor.getId();
+        User user= userService.getUserById(Long.valueOf(userId));
          UserProfile userProfile= userProfileService.getUserProfile(user);
 
          if (userProfile == null ) {
@@ -116,8 +116,8 @@ public ResponseEntity<UserProfileDTO> getUserprofiles(@PathVariable Long userPro
      UserProfile userProfile= userProfileService.getUserProfileById(userProfileId);
 
      //get the user profile of the person who is logged in
-     Long userId = authInterceptor.getId();
-        User user= userService.getUserById(userId);
+     String userId = authInterceptor.getId();
+        User user= userService.getUserById(Long.valueOf(userId));
          UserProfile userProfileLoggedin= userProfileService.getUserProfile(user);
 
      

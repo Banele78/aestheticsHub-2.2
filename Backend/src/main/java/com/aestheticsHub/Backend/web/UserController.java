@@ -52,8 +52,8 @@ public class UserController {
 
     @GetMapping("/api/getUser")    
     public ResponseEntity<User> getUserprofile(){
-       Long userId = authInterceptor.getId();
-        User user= userService.getUserById(userId);
+       String userId = authInterceptor.getId();
+        User user= userService.getUserById(Long.valueOf(userId));
          
         return ResponseEntity.ok(user);
     }

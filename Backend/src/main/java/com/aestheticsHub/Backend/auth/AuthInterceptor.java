@@ -1,5 +1,8 @@
 package com.aestheticsHub.Backend.auth;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -11,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
@@ -21,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
     private loginService loginService;
 
-    private Long userid;
+    private String userid;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -39,13 +43,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
     
         // Validate the token
-        // if (!isTokenValid(authToken)) {
-        //     System.out.println("Invalid or expired auth token.");
-        //     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        //     response.getWriter().write("Unauthorized: Invalid or expired token.");
-        //     response.getWriter().flush();
-        //     return false; // Stop request processing
-        // }
+        if (!isTokenValid(authToken)) {
+            System.out.println("Invalid or expired auth token.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: Invalid or expired token.");
+            response.getWriter().flush();
+            return false; // Stop request processing
+        }
     
         // Extract the user ID from the valid token
         String userId = jwtService.extractUsername(authToken);
@@ -58,18 +62,26 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
     
         // Set user ID for later use in the handler
-        setId(Long.valueOf(userId));
-        System.out.println("Auth token is valid. Access granted for user ID: " + userid);
+        this.userid = userId;
+        System.out.println("Auth token is valid. Access granted for user ID: " + userId);
+
+        // Create an authentication token and set it in the SecurityContext
+        // Here we assume the user has ROLE_USER authority, you can add more roles/authorities if needed
+        UsernamePasswordAuthenticationToken authentication = 
+            new UsernamePasswordAuthenticationToken(userId, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        // Set the authentication object in the SecurityContext
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     
         return true; // Continue processing the request
     }
     
 
-    public void setId(Long userid){
+    public void setId(String userid){
         this.userid=userid;
     }
 
-    public Long getId(){
+    public String getId(){
         return userid;
     }
 
