@@ -2,3 +2,8 @@
   base = "frontend"  # Set this to the folder containing your React app
   publish = "frontend/build"  # Output folder after running `npm run build` or `yarn build`
   command = "npm run build"  # Build command for React (can be `yarn build` if using Yarn)
+
+  [[redirects]]
+  from = "/api/*"
+  to = "http://192.168.0.238:8080/api/:splat"
+  status = 200
