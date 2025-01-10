@@ -35,7 +35,7 @@ function Layout() {
 
   return (
     <>
-      {/* {!noNavbarRoutes.includes(location.pathname) && <Navbar />} */}
+      {!noNavbarRoutes.includes(location.pathname) && <Navbar />}
       <div className='App'>
       <Routes>
         <Route path="/login" element={<Login />} />
