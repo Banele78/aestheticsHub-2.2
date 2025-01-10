@@ -33,9 +33,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     
         // Extract auth token from cookies
         String authToken = extractAuthTokenFromCookies(request);
-        String auString = loginService.getToken();
+       // String auString = loginService.getToken();
        
-    
         if (authToken == null) {
             System.out.println("No auth token found in cookies.");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

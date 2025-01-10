@@ -33,7 +33,7 @@ export const UserProfileProvider = ({ children }) => {
         //setError('Failed to fetch user profile data');
         console.log(err.response)
         //setIsAuthenticated(false);
-        //navigate("/editProfile");
+        navigate("/editProfile");
       } finally {
         setLoading(false);
       }
