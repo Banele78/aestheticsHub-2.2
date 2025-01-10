@@ -1,7 +1,7 @@
 [build]
   base = "frontend"  # Directory where Netlify runs the build command
-  publish = "frontend/build"  # Correct output directory after build
-  command = "CI= npm run build"  # Build command to generate the app
+  publish = "frontend/dist"  # Correct output directory for Vite
+  command = "CI= npm run build"  # Build command for React using Vite
 
 [functions]
   directory = "frontend/netlify/functions"  # Directory where serverless functions are located
