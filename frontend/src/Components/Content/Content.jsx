@@ -141,18 +141,7 @@ function Content() {
   </select>
 </div>
 
-      <div className="view">Most Popular</div>
-     <Posts content={contentByLikes} setContent={setContentByLikes} limit={limit} setLimit={setLimit} userProfile={userProfile} />
-
-     <UserProfiles Profiles={Profiles} limitProfile={limitProfile} setLimitProfile={setLimitProfile} />
-     
-        <div className="view recentView">Recently added</div>
-        <Posts content={contentByDate} setContent={setContentByDate} limit={limitDate} setLimit={setLimitDate} userProfile={userProfile}/>
-     
-     {loadingContent && <div className="container">
-     { [...Array(4)].map((_, index) => <SkeletonLoader key={index} />)}
-
-     </div>}
+    
      
     </div>
   )
