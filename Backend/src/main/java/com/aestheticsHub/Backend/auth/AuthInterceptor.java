@@ -21,51 +21,56 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
     private loginService loginService;
 
-    private Long id;
+    private Long userid;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("AuthInterceptor: preHandle called");
-
-       
-//     // Log all incoming headers
-//     request.getHeaderNames().asIterator().forEachRemaining(headerName -> 
-//     System.out.println(headerName + ": " + request.getHeader(headerName))
-// );
-
-// Log cookies
-//Cookie[] cookies = request.getCookies();
+    
         // Extract auth token from cookies
         String authToken = extractAuthTokenFromCookies(request);
-        String auToken =loginService.getToken();
-        String id = jwtService.extractUsername(auToken);
-
-        setId(Long.valueOf(id));
-        if (auToken == null) {
-            System.out.println("No auth token found in cookies." + authToken);
+    
+        if (authToken == null) {
+            System.out.println("No auth token found in cookies.");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write("Unauthorized: Please log in.");
-        response.getWriter().flush();
-            return false;
+            response.getWriter().write("Unauthorized: Please log in.");
+            response.getWriter().flush();
+            return false; // Stop request processing
         }
-
-        // // Validate the token
-        //  if (!isTokenValid(authToken)) {
+    
+        // Validate the token
+        // if (!isTokenValid(authToken)) {
         //     System.out.println("Invalid or expired auth token.");
-        // //     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid or expired token.");
-        //   return false;
-        //  }
-
-        System.out.println("Auth token is valid. Access granted." + authToken);
-        return true;
+        //     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        //     response.getWriter().write("Unauthorized: Invalid or expired token.");
+        //     response.getWriter().flush();
+        //     return false; // Stop request processing
+        // }
+    
+        // Extract the user ID from the valid token
+        String userId = jwtService.extractUsername(authToken);
+        if (userId == null) {
+            System.out.println("Token does not contain valid user ID.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Unauthorized: Invalid token.");
+            response.getWriter().flush();
+            return false; // Stop request processing
+        }
+    
+        // Set user ID for later use in the handler
+        setId(Long.valueOf(userId));
+        System.out.println("Auth token is valid. Access granted for user ID: " + userid);
+    
+        return true; // Continue processing the request
     }
+    
 
-    public void setId(Long id){
-        this.id=id;
+    public void setId(Long userid){
+        this.userid=userid;
     }
 
     public Long getId(){
-        return id;
+        return userid;
     }
 
     private String extractAuthTokenFromCookies(HttpServletRequest request) {

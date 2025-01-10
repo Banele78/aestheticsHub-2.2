@@ -21,7 +21,7 @@ public class JwtService {
      SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // Set JWT expiration time (e.g., 1 hour)
-    private static final long EXPIRATION_TIME = 3600000L;
+    private static final long EXPIRATION_TIME = 1209600000L;
 
     // Generate a JWT token
     public  String generateToken(String username) {

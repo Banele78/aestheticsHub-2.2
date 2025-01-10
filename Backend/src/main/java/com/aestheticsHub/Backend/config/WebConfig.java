@@ -30,15 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
         };
     }
 
-     @Bean
-    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> webServerFactoryCustomizer() {
-        return factory -> factory.addInitializers(servletContext -> {
-            servletContext.getSessionCookieConfig().setName("SESSIONID");
-            servletContext.getSessionCookieConfig().setHttpOnly(true);
-            servletContext.getSessionCookieConfig().setSecure(false); // HTTPS only
-            // Unfortunately, SameSite cannot be directly configured here in standard Java APIs.
-        });
-    }
+    
     
 
     @Override

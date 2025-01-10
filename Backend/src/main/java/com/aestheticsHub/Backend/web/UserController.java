@@ -75,38 +75,29 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
         }
 
-         // Authenticate user and generate JWT token
-        String token = jwtService.generateToken(String.valueOf(user.getId()));
-        loginDTO.setToken(token);
-      // Create the cookie
-    Cookie cookie = new Cookie("authToken", token);
-    cookie.setHttpOnly(false);
-    cookie.setSecure(false); // 'true' for HTTPS in production
-    cookie.setPath("/");
-    cookie.setMaxAge(17 * 24 * 60 * 60); // 1 week expiry
-    cookie.setDomain("192.168.0.238"); // Use the appropriate domain in production
-    cookie.getValue();
+// Authenticate user and generate JWT token
+String token = jwtService.generateToken(String.valueOf(user.getId()));
+loginDTO.setToken(token);
 
-    
-  
-    // Add the cookie (basic attributes)
-    response.addCookie(cookie);
+// Create the cookie
+Cookie cookie = new Cookie("authToken", token);
+cookie.setHttpOnly(true);
+cookie.setSecure(true); // 'true' for HTTPS in production
+cookie.setPath("/");
+cookie.setMaxAge(17 * 24 * 60 * 60); // 1 week expiry
 
-//    // Add the SameSite=None manually with all attributes
-   String sameSiteCookie = String.format(
-    "%s=%s; Path=%s; HttpOnly; Secure=%b; SameSite=None; Max-Age=%d; Domain=%s",
+// Add the cookie (basic attributes)
+response.addCookie(cookie);
+
+// Manually add SameSite=None
+String sameSiteCookie = String.format(
+    "%s=%s; Path=%s; HttpOnly; Secure; SameSite=None; Max-Age=%d",
     cookie.getName(),
     cookie.getValue(),
-    
     cookie.getPath(),
-   cookie.getSecure(),
-    cookie.getMaxAge(),
-    cookie.getDomain()
+    cookie.getMaxAge()
 );
-
-// Overwrite the Set-Cookie header
-response.setHeader("Set-Cookie", sameSiteCookie);
-
+response.addHeader("Set-Cookie", sameSiteCookie);
         return ResponseEntity.ok("Login successful " );
     }
     
