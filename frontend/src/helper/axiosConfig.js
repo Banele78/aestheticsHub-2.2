@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseURL = 'http://192.168.0.238:8080/api';
+export const baseURL = 'https://aesthesticshub-77c2e00df573.herokuapp.com//api';
 
 export const getImageUrl = `${baseURL}`;
 
